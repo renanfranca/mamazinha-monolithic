@@ -1,0 +1,64 @@
+//Starting define the entities
+entity BabyProfile {
+  name String required
+  picture ImageBlob
+  birthday ZonedDateTime required
+  sign String
+  main Boolean
+  userId String required
+}
+entity Weight {
+  value Double required
+  date ZonedDateTime required
+}
+entity Height {
+  value Double required
+  date ZonedDateTime required
+}
+entity Humor {
+  value Integer required /** 1 to 5  ANGRY, SAD, CALM, HAPPY, EXCITED*/
+  description String required
+  emotico ImageBlob
+}
+entity HumorHistory {
+//  humor Humor - this field will be created though relationship
+  date ZonedDateTime
+}
+//enum Humor {
+//  ANGRY, SAD, CALM, HAPPY, EXCITED
+//}
+entity Nap {
+  start ZonedDateTime
+  end ZonedDateTime
+//  humor Humor - this field will be created though relationship
+  place Place
+}
+enum Place {
+  LAP, BABY_CRIB, CART, BABY_CONFORT
+}
+entity BreastFeed {
+  start ZonedDateTime
+  end ZonedDateTime
+  pain Pain
+}
+enum Pain {
+  NO_PAIN, DISCOMFORTING, DISTRESSING, INTENSE, UTTERLY_HORRIBLE, UNIMAGINABLE
+}
+//Define the relationships
+relationship ManyToOne {
+  Weight{BabyProfile(name)} to BabyProfile
+  Height{BabyProfile(name)} to BabyProfile
+  HumorHistory{BabyProfile(name)} to BabyProfile
+  Nap{BabyProfile(name)} to BabyProfile
+  BreastFeed{BabyProfile(name)} to BabyProfile
+  HumorHistory{Humor(description)} to Humor
+  Nap{Humor(description)} to Humor
+}
+
+//Pagination
+paginate Weight, Height, Humor, HumorHistory, Nap, BreastFeed with infinite-scroll
+paginate BabyProfile with pagination
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
+// Service layer
+service all with serviceClass
