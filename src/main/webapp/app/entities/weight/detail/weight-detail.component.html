@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="weight">
+      <h2 data-cy="weightDetailsHeading"><span jhiTranslate="babyApp.weight.detail.title">Weight</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ weight.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="babyApp.weight.value">Value</span></dt>
+        <dd>
+          <span>{{ weight.value }}</span>
+        </dd>
+        <dt><span jhiTranslate="babyApp.weight.date">Date</span></dt>
+        <dd>
+          <span>{{ weight.date | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="babyApp.weight.babyProfile">Baby Profile</span></dt>
+        <dd>
+          <div *ngIf="weight.babyProfile">
+            <a [routerLink]="['/baby-profile', weight.babyProfile?.id, 'view']">{{ weight.babyProfile?.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/weight', weight.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

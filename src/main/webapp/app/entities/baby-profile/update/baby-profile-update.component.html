@@ -1,0 +1,135 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-baby-profile-heading" data-cy="BabyProfileCreateUpdateHeading" jhiTranslate="babyApp.babyProfile.home.createOrEditLabel">
+        Create or edit a Baby Profile
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="babyApp.babyProfile.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="babyApp.babyProfile.picture" for="field_picture">Picture</label>
+          <div>
+            <img
+              [src]="'data:' + editForm.get('pictureContentType')!.value + ';base64,' + editForm.get('picture')!.value"
+              style="max-height: 100px"
+              *ngIf="editForm.get('picture')!.value"
+              alt="babyProfile image"
+            />
+            <div *ngIf="editForm.get('picture')!.value" class="form-text text-danger clearfix">
+              <span class="pull-start"
+                >{{ editForm.get('pictureContentType')!.value }}, {{ byteSize(editForm.get('picture')!.value) }}</span
+              >
+              <button
+                type="button"
+                (click)="clearInputImage('picture', 'pictureContentType', 'file_picture')"
+                class="btn btn-secondary btn-xs pull-end"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="file_picture"
+              data-cy="picture"
+              (change)="setFileData($event, 'picture', true)"
+              accept="image/*"
+              jhiTranslate="entity.action.addimage"
+            />
+          </div>
+          <input type="hidden" class="form-control" name="picture" id="field_picture" data-cy="picture" formControlName="picture" />
+          <input
+            type="hidden"
+            class="form-control"
+            name="pictureContentType"
+            id="field_pictureContentType"
+            formControlName="pictureContentType"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="babyApp.babyProfile.birthday" for="field_birthday">Birthday</label>
+          <div class="d-flex">
+            <input
+              id="field_birthday"
+              data-cy="birthday"
+              type="datetime-local"
+              class="form-control"
+              name="birthday"
+              formControlName="birthday"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          <div *ngIf="editForm.get('birthday')!.invalid && (editForm.get('birthday')!.dirty || editForm.get('birthday')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('birthday')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('birthday')?.errors?.ZonedDateTimelocal"
+              jhiTranslate="entity.validation.ZonedDateTimelocal"
+            >
+              This field should be a date and time.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="babyApp.babyProfile.sign" for="field_sign">Sign</label>
+          <input type="text" class="form-control" name="sign" id="field_sign" data-cy="sign" formControlName="sign" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="babyApp.babyProfile.main" for="field_main">Main</label>
+          <input type="checkbox" class="form-check" name="main" id="field_main" data-cy="main" formControlName="main" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="babyApp.babyProfile.userId" for="field_userId">User Id</label>
+          <input type="text" class="form-control" name="userId" id="field_userId" data-cy="userId" formControlName="userId" />
+          <div *ngIf="editForm.get('userId')!.invalid && (editForm.get('userId')!.dirty || editForm.get('userId')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('userId')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+{
+  "babyApp": {
+    "humorHistory": {
+      "home": {
+        "title": "Humor Histories",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Humor History",
+        "createOrEditLabel": "Criar ou editar Humor History",
+        "notFound": "Nenhum Humor History encontrado"
+      },
+      "created": "Um novo Humor History foi criado com o identificador {{ param }}",
+      "updated": "Um Humor History foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Humor History foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Humor History {{ id }}?"
+      },
+      "detail": {
+        "title": "Humor History"
+      },
+      "id": "ID",
+      "date": "Date",
+      "babyProfile": "Baby Profile",
+      "humor": "Humor"
+    }
+  }
+}

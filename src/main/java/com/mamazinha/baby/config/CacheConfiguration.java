@@ -48,6 +48,13 @@ public class CacheConfiguration {
             createCache(cm, com.mamazinha.baby.domain.User.class.getName());
             createCache(cm, com.mamazinha.baby.domain.Authority.class.getName());
             createCache(cm, com.mamazinha.baby.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.mamazinha.baby.domain.BabyProfile.class.getName());
+            createCache(cm, com.mamazinha.baby.domain.BreastFeed.class.getName());
+            createCache(cm, com.mamazinha.baby.domain.Height.class.getName());
+            createCache(cm, com.mamazinha.baby.domain.Humor.class.getName());
+            createCache(cm, com.mamazinha.baby.domain.HumorHistory.class.getName());
+            createCache(cm, com.mamazinha.baby.domain.Nap.class.getName());
+            createCache(cm, com.mamazinha.baby.domain.Weight.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

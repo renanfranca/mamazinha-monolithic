@@ -1,0 +1,114 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-humor-heading" data-cy="HumorCreateUpdateHeading" jhiTranslate="babyApp.humor.home.createOrEditLabel">
+        Create or edit a Humor
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="babyApp.humor.value"
+            for="field_value"
+            [ngbTooltip]="'babyApp.humor.help.value' | translate"
+            >Value</label
+          >
+          <input type="number" class="form-control" name="value" id="field_value" data-cy="value" formControlName="value" />
+          <div *ngIf="editForm.get('value')!.invalid && (editForm.get('value')!.dirty || editForm.get('value')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('value')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('value')?.errors?.number" jhiTranslate="entity.validation.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="babyApp.humor.description" for="field_description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+          <div *ngIf="editForm.get('description')!.invalid && (editForm.get('description')!.dirty || editForm.get('description')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('description')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="babyApp.humor.emotico" for="field_emotico">Emotico</label>
+          <div>
+            <img
+              [src]="'data:' + editForm.get('emoticoContentType')!.value + ';base64,' + editForm.get('emotico')!.value"
+              style="max-height: 100px"
+              *ngIf="editForm.get('emotico')!.value"
+              alt="humor image"
+            />
+            <div *ngIf="editForm.get('emotico')!.value" class="form-text text-danger clearfix">
+              <span class="pull-start"
+                >{{ editForm.get('emoticoContentType')!.value }}, {{ byteSize(editForm.get('emotico')!.value) }}</span
+              >
+              <button
+                type="button"
+                (click)="clearInputImage('emotico', 'emoticoContentType', 'file_emotico')"
+                class="btn btn-secondary btn-xs pull-end"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="file_emotico"
+              data-cy="emotico"
+              (change)="setFileData($event, 'emotico', true)"
+              accept="image/*"
+              jhiTranslate="entity.action.addimage"
+            />
+          </div>
+          <input type="hidden" class="form-control" name="emotico" id="field_emotico" data-cy="emotico" formControlName="emotico" />
+          <input
+            type="hidden"
+            class="form-control"
+            name="emoticoContentType"
+            id="field_emoticoContentType"
+            formControlName="emoticoContentType"
+          />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

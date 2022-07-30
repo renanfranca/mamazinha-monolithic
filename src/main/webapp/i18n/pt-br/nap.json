@@ -1,0 +1,28 @@
+{
+  "babyApp": {
+    "nap": {
+      "home": {
+        "title": "Naps",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Nap",
+        "createOrEditLabel": "Criar ou editar Nap",
+        "notFound": "Nenhum Nap encontrado"
+      },
+      "created": "Um novo Nap foi criado com o identificador {{ param }}",
+      "updated": "Um Nap foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Nap foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Nap {{ id }}?"
+      },
+      "detail": {
+        "title": "Nap"
+      },
+      "id": "ID",
+      "start": "Start",
+      "end": "End",
+      "place": "Place",
+      "babyProfile": "Baby Profile",
+      "humor": "Humor"
+    }
+  }
+}

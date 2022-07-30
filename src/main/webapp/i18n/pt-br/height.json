@@ -1,0 +1,26 @@
+{
+  "babyApp": {
+    "height": {
+      "home": {
+        "title": "Heights",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Height",
+        "createOrEditLabel": "Criar ou editar Height",
+        "notFound": "Nenhum Height encontrado"
+      },
+      "created": "Um novo Height foi criado com o identificador {{ param }}",
+      "updated": "Um Height foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Height foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Height {{ id }}?"
+      },
+      "detail": {
+        "title": "Height"
+      },
+      "id": "ID",
+      "value": "Value",
+      "date": "Date",
+      "babyProfile": "Baby Profile"
+    }
+  }
+}

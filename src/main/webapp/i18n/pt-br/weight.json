@@ -1,0 +1,26 @@
+{
+  "babyApp": {
+    "weight": {
+      "home": {
+        "title": "Weights",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Weight",
+        "createOrEditLabel": "Criar ou editar Weight",
+        "notFound": "Nenhum Weight encontrado"
+      },
+      "created": "Um novo Weight foi criado com o identificador {{ param }}",
+      "updated": "Um Weight foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Weight foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Weight {{ id }}?"
+      },
+      "detail": {
+        "title": "Weight"
+      },
+      "id": "ID",
+      "value": "Value",
+      "date": "Date",
+      "babyProfile": "Baby Profile"
+    }
+  }
+}

@@ -1,0 +1,78 @@
+<div>
+  <h2 id="page-heading" data-cy="HeightHeading">
+    <span jhiTranslate="babyApp.height.home.title">Heights</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="reset()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="babyApp.height.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-height"
+        [routerLink]="['/height/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="babyApp.height.home.createLabel"> Create a new Height </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="heights?.length === 0">
+    <span jhiTranslate="babyApp.height.home.notFound">No heights found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="heights && heights.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="reset()">
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="value"><span jhiTranslate="babyApp.height.value">Value</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="date"><span jhiTranslate="babyApp.height.date">Date</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="babyProfile.name">
+            <span jhiTranslate="babyApp.height.babyProfile">Baby Profile</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+        <tr *ngFor="let height of heights; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/height', height.id, 'view']">{{ height.id }}</a>
+          </td>
+          <td>{{ height.value }}</td>
+          <td>{{ height.date | formatMediumDatetime }}</td>
+          <td>
+            <div *ngIf="height.babyProfile">
+              <a [routerLink]="['/baby-profile', height.babyProfile?.id, 'view']">{{ height.babyProfile?.name }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button type="submit" [routerLink]="['/height', height.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button type="submit" [routerLink]="['/height', height.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(height)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

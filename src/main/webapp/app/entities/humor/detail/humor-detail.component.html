@@ -1,0 +1,45 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="humor">
+      <h2 data-cy="humorDetailsHeading"><span jhiTranslate="babyApp.humor.detail.title">Humor</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ humor.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="babyApp.humor.value" [ngbTooltip]="'babyApp.humor.help.value' | translate">Value</span></dt>
+        <dd>
+          <span>{{ humor.value }}</span>
+        </dd>
+        <dt><span jhiTranslate="babyApp.humor.description">Description</span></dt>
+        <dd>
+          <span>{{ humor.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="babyApp.humor.emotico">Emotico</span></dt>
+        <dd>
+          <div *ngIf="humor.emotico">
+            <a (click)="openFile(humor.emotico, humor.emoticoContentType)">
+              <img [src]="'data:' + humor.emoticoContentType + ';base64,' + humor.emotico" style="max-width: 100%" alt="humor image" />
+            </a>
+            {{ humor.emoticoContentType }}, {{ byteSize(humor.emotico) }}
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/humor', humor.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>
