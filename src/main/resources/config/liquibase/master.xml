@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql, mariadb"/>
+    <property name="clobType" value="longvarchar" dbms="h2"/>
+    <property name="clobType" value="clob" dbms="mysql, oracle, mssql, mariadb, postgresql"/>
+    <property name="uuidType" value="uuid" dbms="h2, postgresql"/>
+    <property name="datetimeType" value="datetime(6)" dbms="mysql, mariadb"/>
+    <property name="datetimeType" value="datetime" dbms="oracle, mssql, postgresql, h2"/>
+
+    <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210913140046_added_entity_Humor.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210913140047_added_entity_BabyProfile.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210913140048_added_entity_BreastFeed.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210913140049_added_entity_Height.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210913140050_added_entity_HumorHistory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210913140051_added_entity_Nap.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210913140052_added_entity_Weight.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20210913140048_added_entity_constraints_BreastFeed.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210913140049_added_entity_constraints_Height.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210913140050_added_entity_constraints_HumorHistory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210913140051_added_entity_constraints_Nap.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210913140052_added_entity_constraints_Weight.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20220409163152_insert_default_humor.xml" relativeToChangelogFile="false" />
+</databaseChangeLog>

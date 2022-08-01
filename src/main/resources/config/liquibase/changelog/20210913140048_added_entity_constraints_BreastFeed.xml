@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+    <!--
+        Added the constraints for entity BreastFeed.
+    -->
+    <changeSet id="20210913140048-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="baby_profile_id"
+                                 baseTableName="breast_feed"
+                                 constraintName="fk_breast_feed__baby_profile_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="baby_profile"/>
+    </changeSet>
+</databaseChangeLog>
