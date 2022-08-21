@@ -17,9 +17,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -52,7 +60,9 @@ public class WeightResource {
      * {@code POST  /weights} : Create a new weight.
      *
      * @param weightDTO the weightDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new weightDTO, or with status {@code 400 (Bad Request)} if the weight has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
+     *         body the new weightDTO, or with status {@code 400 (Bad Request)} if
+     *         the weight has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/weights")
@@ -71,11 +81,14 @@ public class WeightResource {
     /**
      * {@code PUT  /weights/:id} : Updates an existing weight.
      *
-     * @param id the id of the weightDTO to save.
+     * @param id        the id of the weightDTO to save.
      * @param weightDTO the weightDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated weightDTO,
-     * or with status {@code 400 (Bad Request)} if the weightDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the weightDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated weightDTO,
+     *         or with status {@code 400 (Bad Request)} if the weightDTO is not
+     *         valid,
+     *         or with status {@code 500 (Internal Server Error)} if the weightDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/weights/{id}")
@@ -103,14 +116,18 @@ public class WeightResource {
     }
 
     /**
-     * {@code PATCH  /weights/:id} : Partial updates given fields of an existing weight, field will ignore if it is null
+     * {@code PATCH  /weights/:id} : Partial updates given fields of an existing
+     * weight, field will ignore if it is null
      *
-     * @param id the id of the weightDTO to save.
+     * @param id        the id of the weightDTO to save.
      * @param weightDTO the weightDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated weightDTO,
-     * or with status {@code 400 (Bad Request)} if the weightDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the weightDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the weightDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated weightDTO,
+     *         or with status {@code 400 (Bad Request)} if the weightDTO is not
+     *         valid,
+     *         or with status {@code 404 (Not Found)} if the weightDTO is not found,
+     *         or with status {@code 500 (Internal Server Error)} if the weightDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/weights/{id}", consumes = { "application/json", "application/merge-patch+json" })
@@ -141,9 +158,11 @@ public class WeightResource {
     /**
      * {@code GET  /weights} : get all the weights.
      *
-     * @param pageable the pagination information.
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of weights in body.
+     * @param pageable  the pagination information.
+     * @param eagerload flag to eager load entities from relationships (This is
+     *                  applicable for many-to-many).
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+     *         of weights in body.
      */
     @GetMapping("/weights")
     public ResponseEntity<List<WeightDTO>> getAllWeights(
@@ -161,11 +180,28 @@ public class WeightResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @GetMapping("/weights/latest-weight-by-baby-profile/{id}")
+    public ResponseEntity<WeightDTO> getLatestWeight(@PathVariable Long id) {
+        Optional<WeightDTO> weightDTO = weightService.findLatestByBabyProfile(id);
+        return ResponseEntity.ok(weightDTO.orElse(null));
+    }
+
+    @GetMapping("/weights/last-weights-by-days-by-baby-profile/{id}")
+    public ResponseEntity<List<WeightDTO>> getAllLastWeightsByDaysByBabyProfile(
+        @PathVariable Long id,
+        @RequestParam(value = "days", required = true) Integer days,
+        @RequestParam(value = "tz", required = false) String timeZone
+    ) {
+        List<WeightDTO> weightDTOList = weightService.findAllLastWeightsByDaysByBabyProfile(id, days, timeZone);
+        return ResponseEntity.ok(weightDTOList);
+    }
+
     /**
      * {@code GET  /weights/:id} : get the "id" weight.
      *
      * @param id the id of the weightDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the weightDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the weightDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/weights/{id}")
     public ResponseEntity<WeightDTO> getWeight(@PathVariable Long id) {

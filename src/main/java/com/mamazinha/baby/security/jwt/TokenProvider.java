@@ -1,13 +1,22 @@
 package com.mamazinha.baby.security.jwt;
 
 import com.mamazinha.baby.management.SecurityMetersService;
-import io.jsonwebtoken.*;
+import com.mamazinha.baby.security.CustomUser;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +24,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import tech.jhipster.config.JHipsterProperties;
@@ -28,6 +36,7 @@ public class TokenProvider {
     private static final String AUTHORITIES_KEY = "auth";
 
     private static final String INVALID_JWT_TOKEN = "Invalid JWT token.";
+    private static final String USER_ID_KEY = "userId";
 
     private final Key key;
 
@@ -62,7 +71,7 @@ public class TokenProvider {
         this.securityMetersService = securityMetersService;
     }
 
-    public String createToken(Authentication authentication, boolean rememberMe) {
+    public String createToken(Authentication authentication, boolean rememberMe, Long userId) {
         String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
@@ -77,6 +86,7 @@ public class TokenProvider {
             .builder()
             .setSubject(authentication.getName())
             .claim(AUTHORITIES_KEY, authorities)
+            .claim(USER_ID_KEY, userId)
             .signWith(key, SignatureAlgorithm.HS512)
             .setExpiration(validity)
             .compact();
@@ -91,7 +101,16 @@ public class TokenProvider {
             .map(SimpleGrantedAuthority::new)
             .collect(Collectors.toList());
 
-        User principal = new User(claims.getSubject(), "", authorities);
+        String userId = null;
+        Object userIdObj = claims.get(USER_ID_KEY);
+        if (userIdObj != null) {
+            userId = userIdObj.toString();
+            log.debug("Claim--> {}", userId);
+        } else {
+            log.debug("No user id in token");
+        }
+
+        CustomUser principal = new CustomUser(claims.getSubject(), "", authorities, userId);
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
@@ -99,8 +118,7 @@ public class TokenProvider {
     public boolean validateToken(String authToken) {
         try {
             jwtParser.parseClaimsJws(authToken);
-
-            return true;
+            return existsUserId(authToken);
         } catch (ExpiredJwtException e) {
             this.securityMetersService.trackTokenExpired();
 
@@ -117,10 +135,16 @@ public class TokenProvider {
             this.securityMetersService.trackTokenInvalidSignature();
 
             log.trace(INVALID_JWT_TOKEN, e);
-        } catch (IllegalArgumentException e) { // TODO: should we let it bubble (no catch), to avoid defensive programming and follow the fail-fast principle?
+        } catch (IllegalArgumentException e) { // TODO: should we let it bubble (no catch), to avoid defensive
+            // programming and follow the fail-fast principle?
             log.error("Token validation error {}", e.getMessage());
         }
 
         return false;
+    }
+
+    private boolean existsUserId(String token) {
+        Claims claims = jwtParser.parseClaimsJws(token).getBody();
+        return claims.get(USER_ID_KEY) != null;
     }
 }

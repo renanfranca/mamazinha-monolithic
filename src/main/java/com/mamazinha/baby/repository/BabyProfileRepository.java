@@ -1,7 +1,10 @@
 package com.mamazinha.baby.repository;
 
 import com.mamazinha.baby.domain.BabyProfile;
-import org.springframework.data.jpa.repository.*;
+import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,4 +12,8 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface BabyProfileRepository extends JpaRepository<BabyProfile, Long> {}
+public interface BabyProfileRepository extends JpaRepository<BabyProfile, Long> {
+    Page<BabyProfile> findByUserId(Pageable pageable, String userId);
+
+    List<BabyProfile> findByUserIdAndIdNotIn(String userId, List<Long> id);
+}

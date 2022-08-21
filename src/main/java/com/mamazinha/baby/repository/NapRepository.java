@@ -1,11 +1,13 @@
 package com.mamazinha.baby.repository;
 
 import com.mamazinha.baby.domain.Nap;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -37,4 +39,43 @@ public interface NapRepository extends JpaRepository<Nap, Long> {
 
     @Query("select nap from Nap nap left join fetch nap.babyProfile left join fetch nap.humor where nap.id =:id")
     Optional<Nap> findOneWithToOneRelationships(@Param("id") Long id);
+
+    Page<Nap> findByBabyProfileUserId(Pageable pageable, String string);
+
+    List<Nap> findByBabyProfileIdAndStartBetweenOrEndBetween(
+        Long id,
+        ZonedDateTime todayMidnight,
+        ZonedDateTime tomorrowMidnight,
+        ZonedDateTime todayMidnight2,
+        ZonedDateTime tomorrowMidnight2
+    );
+
+    List<Nap> findByBabyProfileIdAndStartBetweenOrBabyProfileIdAndEndBetween(
+        Long id,
+        ZonedDateTime todayMidnight,
+        ZonedDateTime tomorrowMidnight,
+        Long id2,
+        ZonedDateTime todayMidnight2,
+        ZonedDateTime tomorrowMidnight2
+    );
+
+    List<Nap> findByBabyProfileIdAndStartGreaterThanEqualAndEndLessThan(
+        Long id,
+        ZonedDateTime todayMidnight,
+        ZonedDateTime tomorrowMidnight
+    );
+
+    List<Nap> findByBabyProfileIdAndStartGreaterThanEqualAndEndLessThanAndHumorNotNull(
+        Long id,
+        ZonedDateTime todayMidnight,
+        ZonedDateTime tomorrowMidnight
+    );
+
+    List<Nap> findByBabyProfileIdAndStartGreaterThanEqualAndEndLessThanAndPlaceNotNull(
+        Long id,
+        ZonedDateTime todayMidnight,
+        ZonedDateTime tomorrowMidnight
+    );
+
+    List<Nap> findByBabyProfileIdAndEndIsNullOrderByStartDesc(Long id);
 }

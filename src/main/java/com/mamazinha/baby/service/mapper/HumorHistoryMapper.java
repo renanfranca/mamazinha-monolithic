@@ -6,7 +6,10 @@ import com.mamazinha.baby.domain.HumorHistory;
 import com.mamazinha.baby.service.dto.BabyProfileDTO;
 import com.mamazinha.baby.service.dto.HumorDTO;
 import com.mamazinha.baby.service.dto.HumorHistoryDTO;
-import org.mapstruct.*;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 /**
  * Mapper for the entity {@link HumorHistory} and its DTO {@link HumorHistoryDTO}.
@@ -21,6 +24,7 @@ public interface HumorHistoryMapper extends EntityMapper<HumorHistoryDTO, HumorH
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
+    @Mapping(target = "main", source = "main")
     BabyProfileDTO toDtoBabyProfileName(BabyProfile babyProfile);
 
     @Named("humorDescription")

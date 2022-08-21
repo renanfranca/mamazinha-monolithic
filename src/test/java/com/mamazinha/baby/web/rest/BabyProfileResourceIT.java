@@ -3,12 +3,20 @@ package com.mamazinha.baby.web.rest;
 import static com.mamazinha.baby.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.mamazinha.baby.IntegrationTest;
 import com.mamazinha.baby.domain.BabyProfile;
 import com.mamazinha.baby.repository.BabyProfileRepository;
+import com.mamazinha.baby.security.CustomUser;
 import com.mamazinha.baby.service.dto.BabyProfileDTO;
 import com.mamazinha.baby.service.mapper.BabyProfileMapper;
 import java.time.Instant;
@@ -18,14 +26,18 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Consumer;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 
@@ -145,6 +157,25 @@ class BabyProfileResourceIT {
 
     @Test
     @Transactional
+    void shouldThrowAccessDeniedExceptionWhenReachMaxBabyProfileAllowedForUserRoleAuthority() throws Exception {
+        // given
+        babyProfileRepository.saveAndFlush(createEntity(em));
+        BabyProfileDTO babyProfileDTO = babyProfileMapper.toDto(babyProfile);
+        // when
+        restBabyProfileMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(babyProfileDTO))
+                    .with(SecurityMockMvcRequestPostProcessors.user(new CustomUser("user", "1234", babyProfile.getUserId(), "ROLE_USER")))
+            )
+            // then
+            .andExpect(status().isForbidden())
+            .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @Transactional
     void createBabyProfileWithExistingId() throws Exception {
         // Create the BabyProfile with an existing ID
         babyProfile.setId(1L);
@@ -232,7 +263,7 @@ class BabyProfileResourceIT {
 
         // Get all the babyProfileList
         restBabyProfileMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .perform(get(ENTITY_API_URL + "?sort=id,desc").with(user("admin").roles("ADMIN")))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(babyProfile.getId().intValue())))
@@ -253,7 +284,10 @@ class BabyProfileResourceIT {
 
         // Get the babyProfile
         restBabyProfileMockMvc
-            .perform(get(ENTITY_API_URL_ID, babyProfile.getId()))
+            .perform(
+                get(ENTITY_API_URL_ID, babyProfile.getId())
+                    .with(SecurityMockMvcRequestPostProcessors.user(new CustomUser("user", "1234", babyProfile.getUserId(), "ROLE_USER")))
+            )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(babyProfile.getId().intValue()))
@@ -283,7 +317,8 @@ class BabyProfileResourceIT {
 
         // Update the babyProfile
         BabyProfile updatedBabyProfile = babyProfileRepository.findById(babyProfile.getId()).get();
-        // Disconnect from session so that the updates on updatedBabyProfile are not directly saved in db
+        // Disconnect from session so that the updates on updatedBabyProfile are not
+        // directly saved in db
         em.detach(updatedBabyProfile);
         updatedBabyProfile
             .name(UPDATED_NAME)
@@ -300,6 +335,7 @@ class BabyProfileResourceIT {
                 put(ENTITY_API_URL_ID, babyProfileDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(babyProfileDTO))
+                    .with(user("admin").roles("ADMIN"))
             )
             .andExpect(status().isOk());
 
@@ -314,6 +350,51 @@ class BabyProfileResourceIT {
         assertThat(testBabyProfile.getSign()).isEqualTo(UPDATED_SIGN);
         assertThat(testBabyProfile.getMain()).isEqualTo(UPDATED_MAIN);
         assertThat(testBabyProfile.getUserId()).isEqualTo(UPDATED_USER_ID);
+    }
+
+    @Test
+    @Transactional
+    void putNewBabyProfileWithUserRole() throws Exception {
+        // Initialize the database
+        babyProfileRepository.saveAndFlush(babyProfile);
+
+        int databaseSizeBeforeUpdate = babyProfileRepository.findAll().size();
+
+        // Update the babyProfile
+        BabyProfile updatedBabyProfile = babyProfileRepository.findById(babyProfile.getId()).get();
+        // Disconnect from session so that the updates on updatedBabyProfile are not
+        // directly saved in db
+        em.detach(updatedBabyProfile);
+        updatedBabyProfile
+            .name(UPDATED_NAME)
+            .picture(UPDATED_PICTURE)
+            .pictureContentType(UPDATED_PICTURE_CONTENT_TYPE)
+            .birthday(UPDATED_BIRTHDAY)
+            .sign(UPDATED_SIGN)
+            .main(UPDATED_MAIN)
+            .userId(UPDATED_USER_ID);
+        BabyProfileDTO babyProfileDTO = babyProfileMapper.toDto(updatedBabyProfile);
+
+        restBabyProfileMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, babyProfileDTO.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(babyProfileDTO))
+                    .with(SecurityMockMvcRequestPostProcessors.user(new CustomUser("user", "1234", DEFAULT_USER_ID, "ROLE_USER")))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the BabyProfile in the database
+        List<BabyProfile> babyProfileList = babyProfileRepository.findAll();
+        assertThat(babyProfileList).hasSize(databaseSizeBeforeUpdate);
+        BabyProfile testBabyProfile = babyProfileList.get(babyProfileList.size() - 1);
+        assertThat(testBabyProfile.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testBabyProfile.getPicture()).isEqualTo(UPDATED_PICTURE);
+        assertThat(testBabyProfile.getPictureContentType()).isEqualTo(UPDATED_PICTURE_CONTENT_TYPE);
+        assertThat(testBabyProfile.getBirthday()).isEqualTo(UPDATED_BIRTHDAY);
+        assertThat(testBabyProfile.getSign()).isEqualTo(UPDATED_SIGN);
+        assertThat(testBabyProfile.getMain()).isEqualTo(UPDATED_MAIN);
+        assertThat(testBabyProfile.getUserId()).isEqualTo(DEFAULT_USER_ID);
     }
 
     @Test
@@ -400,6 +481,7 @@ class BabyProfileResourceIT {
                 patch(ENTITY_API_URL_ID, partialUpdatedBabyProfile.getId())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedBabyProfile))
+                    .with(SecurityMockMvcRequestPostProcessors.user(new CustomUser("user", "1234", babyProfile.getUserId(), "ROLE_USER")))
             )
             .andExpect(status().isOk());
 
@@ -442,6 +524,7 @@ class BabyProfileResourceIT {
                 patch(ENTITY_API_URL_ID, partialUpdatedBabyProfile.getId())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedBabyProfile))
+                    .with(SecurityMockMvcRequestPostProcessors.user(new CustomUser("user", "1234", babyProfile.getUserId(), "ROLE_USER")))
             )
             .andExpect(status().isOk());
 
@@ -535,11 +618,46 @@ class BabyProfileResourceIT {
 
         // Delete the babyProfile
         restBabyProfileMockMvc
-            .perform(delete(ENTITY_API_URL_ID, babyProfile.getId()).accept(MediaType.APPLICATION_JSON))
+            .perform(delete(ENTITY_API_URL_ID, babyProfile.getId()).accept(MediaType.APPLICATION_JSON).with(user("admin").roles("ADMIN")))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
         List<BabyProfile> babyProfileList = babyProfileRepository.findAll();
         assertThat(babyProfileList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    void shouldRemainOnlyOneBabyProfileForSameUserAsMain() throws Exception {
+        // given
+        babyProfileRepository.saveAndFlush(createEntity(em).main(true));
+        babyProfileRepository.saveAndFlush(createEntity(em).main(true));
+        babyProfileRepository.saveAndFlush(createEntity(em).main(true));
+
+        // when
+        // Create the BabyProfile
+        BabyProfileDTO babyProfileDTO = babyProfileMapper.toDto(createEntity(em).main(true));
+        restBabyProfileMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(babyProfileDTO))
+            )
+            .andExpect(status().isCreated());
+        // then
+        List<BabyProfile> babyProfileList = babyProfileRepository.findAll();
+        BabyProfile testBabyProfile = babyProfileList.get(babyProfileList.size() - 1);
+        assertThat(babyProfileRepository.findByUserId(Pageable.unpaged(), DEFAULT_USER_ID))
+            .isNotEmpty()
+            .allSatisfy(
+                new Consumer<BabyProfile>() {
+                    @Override
+                    public void accept(BabyProfile babyProfile) {
+                        if (testBabyProfile.getId() == babyProfile.getId()) {
+                            assertThat(babyProfile.getMain()).isTrue();
+                        } else {
+                            assertThat(babyProfile.getMain()).isFalse();
+                        }
+                    }
+                }
+            );
     }
 }

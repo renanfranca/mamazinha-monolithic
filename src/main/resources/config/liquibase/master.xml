@@ -30,4 +30,5 @@
     <include file="config/liquibase/changelog/20220729222822_added_entity_constraints_Weight.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20220409163152_insert_default_humor.xml" relativeToChangelogFile="false" />
 </databaseChangeLog>

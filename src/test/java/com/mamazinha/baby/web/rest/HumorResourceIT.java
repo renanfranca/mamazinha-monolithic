@@ -2,8 +2,15 @@ package com.mamazinha.baby.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.mamazinha.baby.IntegrationTest;
 import com.mamazinha.baby.domain.Humor;
@@ -105,7 +112,12 @@ class HumorResourceIT {
         // Create the Humor
         HumorDTO humorDTO = humorMapper.toDto(humor);
         restHumorMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(humorDTO)))
+            .perform(
+                post(ENTITY_API_URL)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(humorDTO))
+                    .with(user("admin").roles("ADMIN"))
+            )
             .andExpect(status().isCreated());
 
         // Validate the Humor in the database
@@ -129,7 +141,12 @@ class HumorResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restHumorMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(humorDTO)))
+            .perform(
+                post(ENTITY_API_URL)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(humorDTO))
+                    .with(user("admin").roles("ADMIN"))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Humor in the database
@@ -199,7 +216,7 @@ class HumorResourceIT {
 
         // Get the humor
         restHumorMockMvc
-            .perform(get(ENTITY_API_URL_ID, humor.getId()))
+            .perform(get(ENTITY_API_URL_ID, humor.getId()).with(user("admin").roles("ADMIN")))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(humor.getId().intValue()))
@@ -213,7 +230,9 @@ class HumorResourceIT {
     @Transactional
     void getNonExistingHumor() throws Exception {
         // Get the humor
-        restHumorMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
+        restHumorMockMvc
+            .perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE).with(user("admin").roles("ADMIN")))
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -226,7 +245,8 @@ class HumorResourceIT {
 
         // Update the humor
         Humor updatedHumor = humorRepository.findById(humor.getId()).get();
-        // Disconnect from session so that the updates on updatedHumor are not directly saved in db
+        // Disconnect from session so that the updates on updatedHumor are not directly
+        // saved in db
         em.detach(updatedHumor);
         updatedHumor
             .value(UPDATED_VALUE)
@@ -240,6 +260,7 @@ class HumorResourceIT {
                 put(ENTITY_API_URL_ID, humorDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(humorDTO))
+                    .with(user("admin").roles("ADMIN"))
             )
             .andExpect(status().isOk());
 
@@ -268,6 +289,7 @@ class HumorResourceIT {
                 put(ENTITY_API_URL_ID, humorDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(humorDTO))
+                    .with(user("admin").roles("ADMIN"))
             )
             .andExpect(status().isBadRequest());
 
@@ -291,6 +313,7 @@ class HumorResourceIT {
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(humorDTO))
+                    .with(user("admin").roles("ADMIN"))
             )
             .andExpect(status().isBadRequest());
 
@@ -310,7 +333,12 @@ class HumorResourceIT {
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restHumorMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(humorDTO)))
+            .perform(
+                put(ENTITY_API_URL)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(humorDTO))
+                    .with(user("admin").roles("ADMIN"))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Humor in the database
@@ -341,6 +369,7 @@ class HumorResourceIT {
                 patch(ENTITY_API_URL_ID, partialUpdatedHumor.getId())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedHumor))
+                    .with(user("admin").roles("ADMIN"))
             )
             .andExpect(status().isOk());
 
@@ -377,6 +406,7 @@ class HumorResourceIT {
                 patch(ENTITY_API_URL_ID, partialUpdatedHumor.getId())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedHumor))
+                    .with(user("admin").roles("ADMIN"))
             )
             .andExpect(status().isOk());
 
@@ -405,6 +435,7 @@ class HumorResourceIT {
                 patch(ENTITY_API_URL_ID, humorDTO.getId())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(humorDTO))
+                    .with(user("admin").roles("ADMIN"))
             )
             .andExpect(status().isBadRequest());
 
@@ -428,6 +459,7 @@ class HumorResourceIT {
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(humorDTO))
+                    .with(user("admin").roles("ADMIN"))
             )
             .andExpect(status().isBadRequest());
 
@@ -447,7 +479,12 @@ class HumorResourceIT {
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restHumorMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(humorDTO)))
+            .perform(
+                patch(ENTITY_API_URL)
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(humorDTO))
+                    .with(user("admin").roles("ADMIN"))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Humor in the database
@@ -465,7 +502,7 @@ class HumorResourceIT {
 
         // Delete the humor
         restHumorMockMvc
-            .perform(delete(ENTITY_API_URL_ID, humor.getId()).accept(MediaType.APPLICATION_JSON))
+            .perform(delete(ENTITY_API_URL_ID, humor.getId()).accept(MediaType.APPLICATION_JSON).with(user("admin").roles("ADMIN")))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

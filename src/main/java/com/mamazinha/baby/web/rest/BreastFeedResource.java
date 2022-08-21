@@ -3,6 +3,7 @@ package com.mamazinha.baby.web.rest;
 import com.mamazinha.baby.repository.BreastFeedRepository;
 import com.mamazinha.baby.service.BreastFeedService;
 import com.mamazinha.baby.service.dto.BreastFeedDTO;
+import com.mamazinha.baby.service.dto.BreastFeedLastCurrentWeekDTO;
 import com.mamazinha.baby.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -15,9 +16,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -50,7 +59,9 @@ public class BreastFeedResource {
      * {@code POST  /breast-feeds} : Create a new breastFeed.
      *
      * @param breastFeedDTO the breastFeedDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new breastFeedDTO, or with status {@code 400 (Bad Request)} if the breastFeed has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
+     *         body the new breastFeedDTO, or with status {@code 400 (Bad Request)}
+     *         if the breastFeed has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/breast-feeds")
@@ -69,11 +80,14 @@ public class BreastFeedResource {
     /**
      * {@code PUT  /breast-feeds/:id} : Updates an existing breastFeed.
      *
-     * @param id the id of the breastFeedDTO to save.
+     * @param id            the id of the breastFeedDTO to save.
      * @param breastFeedDTO the breastFeedDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated breastFeedDTO,
-     * or with status {@code 400 (Bad Request)} if the breastFeedDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the breastFeedDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated breastFeedDTO,
+     *         or with status {@code 400 (Bad Request)} if the breastFeedDTO is not
+     *         valid,
+     *         or with status {@code 500 (Internal Server Error)} if the
+     *         breastFeedDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/breast-feeds/{id}")
@@ -92,7 +106,6 @@ public class BreastFeedResource {
         if (!breastFeedRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
         BreastFeedDTO result = breastFeedService.update(breastFeedDTO);
         return ResponseEntity
             .ok()
@@ -101,14 +114,19 @@ public class BreastFeedResource {
     }
 
     /**
-     * {@code PATCH  /breast-feeds/:id} : Partial updates given fields of an existing breastFeed, field will ignore if it is null
+     * {@code PATCH  /breast-feeds/:id} : Partial updates given fields of an
+     * existing breastFeed, field will ignore if it is null
      *
-     * @param id the id of the breastFeedDTO to save.
+     * @param id            the id of the breastFeedDTO to save.
      * @param breastFeedDTO the breastFeedDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated breastFeedDTO,
-     * or with status {@code 400 (Bad Request)} if the breastFeedDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the breastFeedDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the breastFeedDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated breastFeedDTO,
+     *         or with status {@code 400 (Bad Request)} if the breastFeedDTO is not
+     *         valid,
+     *         or with status {@code 404 (Not Found)} if the breastFeedDTO is not
+     *         found,
+     *         or with status {@code 500 (Internal Server Error)} if the
+     *         breastFeedDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/breast-feeds/{id}", consumes = { "application/json", "application/merge-patch+json" })
@@ -139,9 +157,12 @@ public class BreastFeedResource {
     /**
      * {@code GET  /breast-feeds} : get all the breastFeeds.
      *
-     * @param pageable the pagination information.
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of breastFeeds in body.
+     * @param pageable  the pagination information.
+     *                  <<<<<<< HEAD
+     * @param eagerload flag to eager load entities from relationships (This is
+     *                  applicable for many-to-many).
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+     *         of breastFeeds in body.
      */
     @GetMapping("/breast-feeds")
     public ResponseEntity<List<BreastFeedDTO>> getAllBreastFeeds(
@@ -163,13 +184,41 @@ public class BreastFeedResource {
      * {@code GET  /breast-feeds/:id} : get the "id" breastFeed.
      *
      * @param id the id of the breastFeedDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the breastFeedDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the breastFeedDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/breast-feeds/{id}")
     public ResponseEntity<BreastFeedDTO> getBreastFeed(@PathVariable Long id) {
         log.debug("REST request to get BreastFeed : {}", id);
         Optional<BreastFeedDTO> breastFeedDTO = breastFeedService.findOne(id);
         return ResponseUtil.wrapOrNotFound(breastFeedDTO);
+    }
+
+    @GetMapping("/breast-feeds/today-breast-feeds-by-baby-profile/{id}")
+    public ResponseEntity<List<BreastFeedDTO>> getAllTodayBrastFeedsByBabyProfile(
+        @PathVariable Long id,
+        @RequestParam(value = "tz", required = false) String timeZone
+    ) {
+        List<BreastFeedDTO> breastFeedDTOList = breastFeedService.getAllTodayBrastFeedsByBabyProfile(id, timeZone);
+        return ResponseEntity.ok(breastFeedDTOList);
+    }
+
+    @GetMapping("/breast-feeds/lastweek-currentweek-average-breast-feeds-in-hours-eachday-by-baby-profile/{id}")
+    public ResponseEntity<BreastFeedLastCurrentWeekDTO> getLastWeekCurrentWeekSumNapsHoursEachDayByBabyProfile(
+        @PathVariable Long id,
+        @RequestParam(value = "tz", required = false) String timeZone
+    ) {
+        BreastFeedLastCurrentWeekDTO breastFeedLastCurrentWeekDTO = breastFeedService.getLastWeekCurrentWeekAverageBreastFeedsHoursEachDayByBabyProfile(
+            id,
+            timeZone
+        );
+        return ResponseEntity.ok(breastFeedLastCurrentWeekDTO);
+    }
+
+    @GetMapping("/breast-feeds/incomplete-breast-feeds-by-baby-profile/{id}")
+    public ResponseEntity<List<BreastFeedDTO>> getAllIncompleteBreastFeedsByBabyProfile(@PathVariable Long id) {
+        List<BreastFeedDTO> breastFeedDTOList = breastFeedService.getAllIncompleteBreastFeedsByBabyProfile(id);
+        return ResponseEntity.ok(breastFeedDTOList);
     }
 
     /**

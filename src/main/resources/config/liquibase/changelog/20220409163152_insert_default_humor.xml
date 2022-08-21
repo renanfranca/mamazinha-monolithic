@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+       Insert default humors in entity Humor.
+    -->
+    <changeSet id="220220409163152-1" author="renanfranca">
+        <insert tableName="humor">
+            <column name="id" value="1" />
+            <column name="value" value="1" />
+            <column name="description" value="angry" />
+        </insert>
+        <insert tableName="humor">
+            <column name="id" value="2" />
+            <column name="value" value="2" />
+            <column name="description" value="sad" />
+        </insert>
+        <insert tableName="humor">
+            <column name="id" value="3" />
+            <column name="value" value="3" />
+            <column name="description" value="meh" />
+        </insert>
+        <insert tableName="humor">
+            <column name="id" value="4" />
+            <column name="value" value="4" />
+            <column name="description" value="happy" />
+        </insert>
+        <insert tableName="humor">
+            <column name="id" value="5" />
+            <column name="value" value="5" />
+            <column name="description" value="excited" />
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

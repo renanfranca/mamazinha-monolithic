@@ -1,11 +1,13 @@
 package com.mamazinha.baby.repository;
 
 import com.mamazinha.baby.domain.Height;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -37,4 +39,10 @@ public interface HeightRepository extends JpaRepository<Height, Long> {
 
     @Query("select height from Height height left join fetch height.babyProfile where height.id =:id")
     Optional<Height> findOneWithToOneRelationships(@Param("id") Long id);
+
+    Page<Height> findByBabyProfileUserId(Pageable pageable, String string);
+
+    Optional<Height> findFirstByBabyProfileIdOrderByDateDesc(Long id);
+
+    List<Height> findAllByBabyProfileIdAndDateBetweenOrderByDateAsc(Long id, ZonedDateTime daysAgo, ZonedDateTime tomorrowMidnight);
 }

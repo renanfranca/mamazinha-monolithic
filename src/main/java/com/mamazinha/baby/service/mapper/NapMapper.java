@@ -6,7 +6,10 @@ import com.mamazinha.baby.domain.Nap;
 import com.mamazinha.baby.service.dto.BabyProfileDTO;
 import com.mamazinha.baby.service.dto.HumorDTO;
 import com.mamazinha.baby.service.dto.NapDTO;
-import org.mapstruct.*;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 /**
  * Mapper for the entity {@link Nap} and its DTO {@link NapDTO}.
@@ -21,6 +24,7 @@ public interface NapMapper extends EntityMapper<NapDTO, Nap> {
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
+    @Mapping(target = "main", source = "main")
     BabyProfileDTO toDtoBabyProfileName(BabyProfile babyProfile);
 
     @Named("humorDescription")

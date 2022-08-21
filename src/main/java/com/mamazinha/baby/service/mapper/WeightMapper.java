@@ -4,7 +4,10 @@ import com.mamazinha.baby.domain.BabyProfile;
 import com.mamazinha.baby.domain.Weight;
 import com.mamazinha.baby.service.dto.BabyProfileDTO;
 import com.mamazinha.baby.service.dto.WeightDTO;
-import org.mapstruct.*;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 /**
  * Mapper for the entity {@link Weight} and its DTO {@link WeightDTO}.
@@ -18,5 +21,6 @@ public interface WeightMapper extends EntityMapper<WeightDTO, Weight> {
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
+    @Mapping(target = "main", source = "main")
     BabyProfileDTO toDtoBabyProfileName(BabyProfile babyProfile);
 }

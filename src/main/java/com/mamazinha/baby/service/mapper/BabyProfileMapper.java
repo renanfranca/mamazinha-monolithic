@@ -2,7 +2,7 @@ package com.mamazinha.baby.service.mapper;
 
 import com.mamazinha.baby.domain.BabyProfile;
 import com.mamazinha.baby.service.dto.BabyProfileDTO;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
 
 /**
  * Mapper for the entity {@link BabyProfile} and its DTO {@link BabyProfileDTO}.

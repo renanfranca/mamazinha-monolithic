@@ -8,4 +8,5 @@ public enum Place {
     BABY_CRIB,
     CART,
     BABY_CONFORT,
+    BED,
 }

@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Lob;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * A DTO for the {@link com.mamazinha.baby.domain.Humor} entity.
@@ -14,7 +14,7 @@ public class HumorDTO implements Serializable {
     private Long id;
 
     /**
-     * 1 to 5  ANGRY, SAD, CALM, HAPPY, EXCITED
+     * 1 to 5 ANGRY, SAD, CALM, HAPPY, EXCITED
      */
     @NotNull
     @Schema(description = "1 to 5  ANGRY, SAD, CALM, HAPPY, EXCITED", required = true)
@@ -93,10 +93,10 @@ public class HumorDTO implements Serializable {
     @Override
     public String toString() {
         return "HumorDTO{" +
-            "id=" + getId() +
-            ", value=" + getValue() +
-            ", description='" + getDescription() + "'" +
-            ", emotico='" + getEmotico() + "'" +
-            "}";
+                "id=" + getId() +
+                ", value=" + getValue() +
+                ", description='" + getDescription() + "'" +
+                ", emotico='" + getEmotico() + "'" +
+                "}";
     }
 }

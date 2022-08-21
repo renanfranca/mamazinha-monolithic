@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import javax.persistence.Lob;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * A DTO for the {@link com.mamazinha.baby.domain.BabyProfile} entity.
@@ -28,7 +28,6 @@ public class BabyProfileDTO implements Serializable {
 
     private Boolean main;
 
-    @NotNull
     private String userId;
 
     public Long getId() {
@@ -120,13 +119,13 @@ public class BabyProfileDTO implements Serializable {
     @Override
     public String toString() {
         return "BabyProfileDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", picture='" + getPicture() + "'" +
-            ", birthday='" + getBirthday() + "'" +
-            ", sign='" + getSign() + "'" +
-            ", main='" + getMain() + "'" +
-            ", userId='" + getUserId() + "'" +
-            "}";
+                "id=" + getId() +
+                ", name='" + getName() + "'" +
+                ", picture='" + getPicture() + "'" +
+                ", birthday='" + getBirthday() + "'" +
+                ", sign='" + getSign() + "'" +
+                ", main='" + getMain() + "'" +
+                ", userId='" + getUserId() + "'" +
+                "}";
     }
 }

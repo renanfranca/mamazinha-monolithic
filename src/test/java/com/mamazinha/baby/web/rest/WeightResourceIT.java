@@ -3,17 +3,34 @@ package com.mamazinha.baby.web.rest;
 import static com.mamazinha.baby.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.mamazinha.baby.IntegrationTest;
+import com.mamazinha.baby.domain.BabyProfile;
 import com.mamazinha.baby.domain.Weight;
+import com.mamazinha.baby.repository.BabyProfileRepository;
 import com.mamazinha.baby.repository.WeightRepository;
+import com.mamazinha.baby.security.CustomUser;
 import com.mamazinha.baby.service.WeightService;
 import com.mamazinha.baby.service.dto.WeightDTO;
 import com.mamazinha.baby.service.mapper.WeightMapper;
+import java.net.URI;
+import java.time.Clock;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -25,15 +42,20 @@ import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -77,6 +99,12 @@ class WeightResourceIT {
 
     private Weight weight;
 
+    @MockBean
+    private Clock clock;
+
+    @Autowired
+    private BabyProfileRepository babyProfileRepository;
+
     /**
      * Create an entity for this test.
      *
@@ -101,6 +129,8 @@ class WeightResourceIT {
 
     @BeforeEach
     public void initTest() {
+        Mockito.when(clock.instant()).thenReturn(Clock.systemDefaultZone().instant());
+        Mockito.when(clock.getZone()).thenReturn(Clock.systemDefaultZone().getZone());
         weight = createEntity(em);
     }
 
@@ -109,9 +139,15 @@ class WeightResourceIT {
     void createWeight() throws Exception {
         int databaseSizeBeforeCreate = weightRepository.findAll().size();
         // Create the Weight
-        WeightDTO weightDTO = weightMapper.toDto(weight);
+        BabyProfile babyProfile = babyProfileRepository.saveAndFlush(BabyProfileResourceIT.createEntity(em).userId("11111111"));
+        WeightDTO weightDTO = weightMapper.toDto(weight.babyProfile(babyProfile));
         restWeightMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(weightDTO)))
+            .perform(
+                post(ENTITY_API_URL)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(weightDTO))
+                    .with(SecurityMockMvcRequestPostProcessors.user(new CustomUser("user", "1234", babyProfile.getUserId(), "ROLE_USER")))
+            )
             .andExpect(status().isCreated());
 
         // Validate the Weight in the database
@@ -185,7 +221,7 @@ class WeightResourceIT {
 
         // Get all the weightList
         restWeightMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .perform(get(ENTITY_API_URL + "?sort=id,desc").with(user("admin").roles("ADMIN")))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(weight.getId().intValue())))
@@ -213,13 +249,141 @@ class WeightResourceIT {
 
     @Test
     @Transactional
+    void getAllWeightsWhithUserRole() throws Exception {
+        // Initialize the database
+        BabyProfile babyProfile = babyProfileRepository.saveAndFlush(BabyProfileResourceIT.createEntity(em));
+        weight.babyProfile(babyProfile);
+        weightRepository.saveAndFlush(weight);
+
+        // Get all the weightList
+        restWeightMockMvc
+            .perform(
+                get(ENTITY_API_URL + "?sort=id,desc")
+                    .with(SecurityMockMvcRequestPostProcessors.user(new CustomUser("user", "1234", babyProfile.getUserId(), "ROLE_USER")))
+            )
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(weight.getId().intValue())))
+            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.doubleValue())))
+            .andExpect(jsonPath("$.[*].date").value(hasItem(sameInstant(DEFAULT_DATE))));
+    }
+
+    @Test
+    @Transactional
+    void shouldThrowAccessDeniedExceptionWhenGetLatestWeightByBabyProfile() throws Exception {
+        // given
+        BabyProfile babyProfile = babyProfileRepository.saveAndFlush(BabyProfileResourceIT.createEntity(em).userId("11111111"));
+        weightRepository.saveAndFlush(weight.babyProfile(babyProfile));
+        // when
+        restWeightMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/latest-weight-by-baby-profile/{id}", babyProfile.getId())
+                    .with(SecurityMockMvcRequestPostProcessors.user(new CustomUser("user", "1234", "another userId value", "ROLE_USER")))
+            )
+            // then
+            .andExpect(status().isForbidden());
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "false", "true" })
+    @Transactional
+    void getLastWeightsByDaysByBabyProfile(boolean withTimeZone) throws Exception {
+        // given
+        Integer year = 2021;
+        Integer month = 10;
+        Integer day = 28;
+        Integer hour = 8;
+        // Initialize the database
+        BabyProfile babyProfile = babyProfileRepository.saveAndFlush(BabyProfileResourceIT.createEntity(em));
+        weightRepository.saveAndFlush(
+            createEntity(em).date((ZonedDateTime.of(year, month, day - 3, hour, 30, 0, 0, ZoneId.systemDefault()))).babyProfile(babyProfile)
+        );
+        weightRepository.saveAndFlush(
+            createEntity(em).date((ZonedDateTime.of(year, month, day - 2, hour, 30, 0, 0, ZoneId.systemDefault()))).babyProfile(babyProfile)
+        );
+        weightRepository.saveAndFlush(
+            createEntity(em).date((ZonedDateTime.of(year, month, day - 1, hour, 30, 0, 0, ZoneId.systemDefault()))).babyProfile(babyProfile)
+        );
+        weightRepository
+            .saveAndFlush(weight.date((ZonedDateTime.of(year, month, day, hour, 30, 0, 0, ZoneId.systemDefault()))))
+            .babyProfile(babyProfile);
+
+        // when
+        URI uri;
+        if (withTimeZone) {
+            String timeZone = "America/Sao_Paulo";
+            mockClockFixed(year, month, day, hour, 35, 00, timeZone);
+            uri =
+                new URI(
+                    ENTITY_API_URL + "/last-weights-by-days-by-baby-profile/" + babyProfile.getId() + "?tz=" + timeZone + "&days=" + 30
+                );
+        } else {
+            mockClockFixed(year, month, day, hour, 35, 00, null);
+            uri = new URI(ENTITY_API_URL + "/last-weights-by-days-by-baby-profile/" + babyProfile.getId() + "?days=" + 30);
+        }
+        restWeightMockMvc
+            .perform(
+                get(uri)
+                    .with(SecurityMockMvcRequestPostProcessors.user(new CustomUser("user", "1234", babyProfile.getUserId(), "ROLE_USER")))
+            )
+            // then
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.size()").value(4))
+            .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @Transactional
+    void getLatestWeightByBabyProfile() throws Exception {
+        // given
+        Integer year = 2021;
+        Integer month = 10;
+        Integer day = 28;
+        Integer hour = 8;
+        // Initialize the database
+        mockClockFixed(year, month, day, hour, 35, 00, null);
+        BabyProfile babyProfile = babyProfileRepository.saveAndFlush(BabyProfileResourceIT.createEntity(em));
+        weightRepository.saveAndFlush(
+            createEntity(em).date((ZonedDateTime.of(year, month, day - 3, hour, 30, 0, 0, ZoneId.systemDefault()))).babyProfile(babyProfile)
+        );
+        weightRepository.saveAndFlush(
+            createEntity(em).date((ZonedDateTime.of(year, month, day - 2, hour, 30, 0, 0, ZoneId.systemDefault()))).babyProfile(babyProfile)
+        );
+        weightRepository.saveAndFlush(
+            createEntity(em).date((ZonedDateTime.of(year, month, day - 1, hour, 30, 0, 0, ZoneId.systemDefault()))).babyProfile(babyProfile)
+        );
+        weightRepository
+            .saveAndFlush(weight.date((ZonedDateTime.of(year, month, day, hour, 30, 0, 0, ZoneId.systemDefault()))))
+            .babyProfile(babyProfile);
+
+        // when
+        restWeightMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/latest-weight-by-baby-profile/{id}", babyProfile.getId())
+                    .with(SecurityMockMvcRequestPostProcessors.user(new CustomUser("user", "1234", babyProfile.getUserId(), "ROLE_USER")))
+            )
+            // then
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.id").value(weight.getId().intValue()))
+            .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.doubleValue()))
+            .andExpect(jsonPath("$.date").value(sameInstant((ZonedDateTime.of(year, month, day, hour, 30, 0, 0, ZoneId.systemDefault())))));
+    }
+
+    @Test
+    @Transactional
     void getWeight() throws Exception {
         // Initialize the database
-        weightRepository.saveAndFlush(weight);
+        BabyProfile babyProfile = babyProfileRepository.saveAndFlush(BabyProfileResourceIT.createEntity(em).userId("11111111"));
+        weightRepository.saveAndFlush(weight.babyProfile(babyProfile));
 
         // Get the weight
         restWeightMockMvc
-            .perform(get(ENTITY_API_URL_ID, weight.getId()))
+            .perform(
+                get(ENTITY_API_URL_ID, weight.getId())
+                    .with(SecurityMockMvcRequestPostProcessors.user(new CustomUser("user", "1234", babyProfile.getUserId(), "ROLE_USER")))
+            )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(weight.getId().intValue()))
@@ -238,13 +402,15 @@ class WeightResourceIT {
     @Transactional
     void putNewWeight() throws Exception {
         // Initialize the database
-        weightRepository.saveAndFlush(weight);
+        BabyProfile babyProfile = babyProfileRepository.saveAndFlush(BabyProfileResourceIT.createEntity(em).userId("11111111"));
+        weightRepository.saveAndFlush(weight.babyProfile(babyProfile));
 
         int databaseSizeBeforeUpdate = weightRepository.findAll().size();
 
         // Update the weight
         Weight updatedWeight = weightRepository.findById(weight.getId()).get();
-        // Disconnect from session so that the updates on updatedWeight are not directly saved in db
+        // Disconnect from session so that the updates on updatedWeight are not directly
+        // saved in db
         em.detach(updatedWeight);
         updatedWeight.value(UPDATED_VALUE).date(UPDATED_DATE);
         WeightDTO weightDTO = weightMapper.toDto(updatedWeight);
@@ -254,6 +420,7 @@ class WeightResourceIT {
                 put(ENTITY_API_URL_ID, weightDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(weightDTO))
+                    .with(SecurityMockMvcRequestPostProcessors.user(new CustomUser("user", "1234", babyProfile.getUserId(), "ROLE_USER")))
             )
             .andExpect(status().isOk());
 
@@ -334,7 +501,8 @@ class WeightResourceIT {
     @Transactional
     void partialUpdateWeightWithPatch() throws Exception {
         // Initialize the database
-        weightRepository.saveAndFlush(weight);
+        BabyProfile babyProfile = babyProfileRepository.saveAndFlush(BabyProfileResourceIT.createEntity(em).userId("11111111"));
+        weightRepository.saveAndFlush(weight.babyProfile(babyProfile));
 
         int databaseSizeBeforeUpdate = weightRepository.findAll().size();
 
@@ -349,6 +517,7 @@ class WeightResourceIT {
                 patch(ENTITY_API_URL_ID, partialUpdatedWeight.getId())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedWeight))
+                    .with(SecurityMockMvcRequestPostProcessors.user(new CustomUser("user", "1234", babyProfile.getUserId(), "ROLE_USER")))
             )
             .andExpect(status().isOk());
 
@@ -364,7 +533,8 @@ class WeightResourceIT {
     @Transactional
     void fullUpdateWeightWithPatch() throws Exception {
         // Initialize the database
-        weightRepository.saveAndFlush(weight);
+        BabyProfile babyProfile = babyProfileRepository.saveAndFlush(BabyProfileResourceIT.createEntity(em).userId("11111111"));
+        weightRepository.saveAndFlush(weight.babyProfile(babyProfile));
 
         int databaseSizeBeforeUpdate = weightRepository.findAll().size();
 
@@ -379,6 +549,7 @@ class WeightResourceIT {
                 patch(ENTITY_API_URL_ID, partialUpdatedWeight.getId())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedWeight))
+                    .with(SecurityMockMvcRequestPostProcessors.user(new CustomUser("user", "1234", babyProfile.getUserId(), "ROLE_USER")))
             )
             .andExpect(status().isOk());
 
@@ -461,17 +632,38 @@ class WeightResourceIT {
     @Transactional
     void deleteWeight() throws Exception {
         // Initialize the database
-        weightRepository.saveAndFlush(weight);
+        BabyProfile babyProfile = babyProfileRepository.saveAndFlush(BabyProfileResourceIT.createEntity(em).userId("11111111"));
+        weightRepository.saveAndFlush(weight.babyProfile(babyProfile));
 
         int databaseSizeBeforeDelete = weightRepository.findAll().size();
 
         // Delete the weight
         restWeightMockMvc
-            .perform(delete(ENTITY_API_URL_ID, weight.getId()).accept(MediaType.APPLICATION_JSON))
+            .perform(
+                delete(ENTITY_API_URL_ID, weight.getId())
+                    .accept(MediaType.APPLICATION_JSON)
+                    .with(SecurityMockMvcRequestPostProcessors.user(new CustomUser("user", "1234", babyProfile.getUserId(), "ROLE_USER")))
+            )
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
         List<Weight> weightList = weightRepository.findAll();
         assertThat(weightList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    private void mockClockFixed(Integer year, Integer month, Integer day, Integer hour, Integer minute, Integer second, String timeZone) {
+        LocalDateTime dataTimeFixedAtTest;
+        if (hour != null && minute != null && second != null) {
+            dataTimeFixedAtTest = LocalDateTime.of(year, month, day, hour, minute, second);
+        } else {
+            dataTimeFixedAtTest = LocalDate.of(year, month, day).atStartOfDay();
+        }
+        Clock fixedClock = Clock.fixed(dataTimeFixedAtTest.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+
+        Mockito.when(clock.instant()).thenReturn(fixedClock.instant());
+        Mockito.when(clock.getZone()).thenReturn(fixedClock.getZone());
+        if (timeZone != null) {
+            Mockito.when(clock.withZone(ZoneId.of(timeZone))).thenReturn(fixedClock);
+        }
     }
 }
