@@ -61,6 +61,9 @@ public class BabyProfileService {
             }
         }
         babyProfile = babyProfileRepository.save(babyProfile);
+        if (Boolean.TRUE.equals(babyProfile.getMain())) {
+            updateOthersBabyProfileFromSameUserToMainFalse(babyProfile.getUserId(), babyProfile.getId());
+        }
         return babyProfileMapper.toDto(babyProfile);
     }
 
