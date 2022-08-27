@@ -1,0 +1,275 @@
+<div class="row justify-content-center">
+  <div class="col-md-8 col-sm-12">
+    <div *ngIf="babyProfile">
+      <h2 data-cy="babyProfileDetailsHeading">
+        <span jhiTranslate="gatewayApp.babyBabyProfile.detail.title" [translateValues]="{ date: currentTodayDateShortFormat }"
+          >Baby Profile</span
+        >
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ babyProfile.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.babyBabyProfile.name">Name</span></dt>
+        <dd>
+          <span>{{ babyProfile.name }}</span>
+        </dd>
+        <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="gatewayApp.babyBabyProfile.picture">Picture</span></dt>
+        <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <div *ngIf="babyProfile.picture">
+            <a (click)="openFile(babyProfile.picture, babyProfile.pictureContentType)">
+              <img
+                [src]="'data:' + babyProfile.pictureContentType + ';base64,' + babyProfile.picture"
+                style="max-width: 100%"
+                alt="babyProfile image"
+              />
+            </a>
+            {{ babyProfile.pictureContentType }}, {{ byteSize(babyProfile.picture) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.babyBabyProfile.birthday">Birthday</span></dt>
+        <dd>
+          <span>{{ babyProfile.birthday | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.babyBabyProfile.sign">Sign</span></dt>
+        <dd>
+          <span>{{ babyProfile.sign }}</span>
+        </dd>
+        <dt class="align-self-center">
+          <span jhiTranslate="gatewayApp.babyBabyProfile.humorAverageHumorHistory">Humor after Nap (average)</span>
+        </dt>
+        <dd>
+          <div class="row align-items-center">
+            <div class="col-lg-2 col-sm-3 col-6 m-0 pr-0 text-center">
+              <a [routerLink]="['/humor-history']">
+                <div *ngIf="humorAverageHumorHistory && humorAverageHumorHistory?.humorAverage > 0">
+                  <div [ngSwitch]="humorAverageHumorHistory?.humorAverage">
+                    <fa-icon *ngSwitchCase="1" icon="angry" class="emoji angry select"></fa-icon>
+                    <fa-icon *ngSwitchCase="2" icon="frown" class="emoji frown select"></fa-icon>
+                    <fa-icon *ngSwitchCase="3" icon="meh" class="emoji meh select"></fa-icon>
+                    <fa-icon *ngSwitchCase="4" icon="smile" class="emoji smile select"></fa-icon>
+                    <fa-icon *ngSwitchCase="5" icon="laugh" class="emoji laugh select"></fa-icon>
+                  </div>
+                </div>
+                <div *ngIf="humorAverageHumorHistory && humorAverageHumorHistory?.humorAverage === 0">
+                  <fa-icon icon="window-minimize" class="text-muted"></fa-icon>
+                </div>
+              </a>
+            </div>
+            <div class="col-lg-10 col-sm-9 col-6 text-left">
+              <a [routerLink]="['/humor-history/new']" class="btn btn-primary m-0 text-white p-2 mt-1">
+                <fa-icon icon="plus"></fa-icon>
+                <span class="d-none d-sm-inline" jhiTranslate="gatewayApp.babyBabyProfile.addHumorHistory"> Humor </span>
+              </a>
+              <button (click)="showHideWeekAverageHumorHistoryGraphic()" [disabled]="graphicLoading" class="btn btn-info btn-sm p-2 mt-1">
+                <fa-icon icon="chart-area" [ngClass]="graphicLoading ? 'fa-bounce' : ''"></fa-icon>
+              </button>
+            </div>
+          </div>
+        </dd>
+        <dt *ngIf="isShowWeekAverageHumorHistoryGraphic(averageHumorHistoryLastCurrentWeek)"></dt>
+        <dd class="gird-col-span-2" *ngIf="isShowWeekAverageHumorHistoryGraphic(averageHumorHistoryLastCurrentWeek)">
+          <div class="row mt-1">
+            <div class="col-md-12 col-xs-12">
+              <nvd3 [options]="averageHumorHistoryOptions" [data]="averageHumorHistoryData"></nvd3>
+            </div>
+          </div>
+        </dd>
+        <dt class="align-self-center"><span jhiTranslate="gatewayApp.babyBabyProfile.humorAverageNap">Humor after Nap (average)</span></dt>
+        <dd>
+          <div class="row align-items-center">
+            <div class="col-lg-2 col-sm-3 col-6 m-0 pr-0 text-center">
+              <a [routerLink]="['/nap']">
+                <div *ngIf="humorAverageNap && humorAverageNap?.humorAverage > 0">
+                  <div [ngSwitch]="humorAverageNap?.humorAverage">
+                    <fa-icon *ngSwitchCase="1" icon="angry" class="emoji angry select"></fa-icon>
+                    <fa-icon *ngSwitchCase="2" icon="frown" class="emoji frown select"></fa-icon>
+                    <fa-icon *ngSwitchCase="3" icon="meh" class="emoji meh select"></fa-icon>
+                    <fa-icon *ngSwitchCase="4" icon="smile" class="emoji smile select"></fa-icon>
+                    <fa-icon *ngSwitchCase="5" icon="laugh" class="emoji laugh select"></fa-icon>
+                  </div>
+                </div>
+                <div *ngIf="humorAverageNap && humorAverageNap?.humorAverage === 0">
+                  <fa-icon icon="window-minimize" class="text-muted"></fa-icon>
+                </div>
+              </a>
+            </div>
+            <div class="col-lg-10 col-sm-9 col-6 text-left">
+              <a [routerLink]="['/nap/new']" class="btn btn-primary m-0 text-white p-2 mt-1">
+                <fa-icon icon="plus"></fa-icon>
+                <span class="d-none d-sm-inline" jhiTranslate="gatewayApp.babyBabyProfile.addNap"> Nap </span>
+              </a>
+              <button (click)="showHideWeekAverageNapHumorGraphic()" [disabled]="graphicLoading" class="btn btn-info btn-sm p-2 mt-1">
+                <fa-icon icon="chart-area" [ngClass]="graphicLoading ? 'fa-bounce' : ''"></fa-icon>
+              </button>
+            </div>
+          </div>
+        </dd>
+        <dt *ngIf="isShowWeekAverageNapHumorGraphic(averageNapHumorLastCurrentWeek)"></dt>
+        <dd class="gird-col-span-2" *ngIf="isShowWeekAverageNapHumorGraphic(averageNapHumorLastCurrentWeek)">
+          <div class="row mt-1">
+            <div class="col-md-12 col-xs-12">
+              <nvd3 [options]="averageNapHumorOptions" [data]="averageNapHumorData"></nvd3>
+            </div>
+          </div>
+        </dd>
+        <dt>
+          <span jhiTranslate="gatewayApp.babyBabyProfile.favoriteNapPlace" class="d-block align-self-center"
+            >Favorite Nap Place (from last {{ favoriteNapPlace?.periodInDays }} days)</span
+          >
+          <span
+            jhiTranslate="gatewayApp.babyBabyProfile.favoriteNapPlaceLastDays"
+            [translateValues]="{ lastDays: favoriteNapPlace?.periodInDays }"
+            class="d-block align-self-center"
+            >Favorite Nap Place (from last {{ favoriteNapPlace?.periodInDays }} days)</span
+          >
+        </dt>
+        <dd>
+          <div class="row align-items-center">
+            <div class="col-lg-2 col-sm-3 col-6 m-0 pr-0 text-center">
+              <a [routerLink]="['/nap']">
+                <div *ngIf="favoriteNapPlace?.favoritePlace">
+                  <span jhiTranslate="{{ 'gatewayApp.Place.' + favoriteNapPlace?.favoritePlace }}" class="d-block text-center">{{
+                    favoriteNapPlace?.favoritePlace
+                  }}</span>
+                  <span
+                    jhiTranslate="gatewayApp.babyBabyProfile.favoriteNapPlaceAmountOfTimes"
+                    [translateValues]="{ amountOfTimes: favoriteNapPlace?.amountOfTimes }"
+                    class="d-block text-center"
+                  >
+                    ({{ favoriteNapPlace?.amountOfTimes }} times)</span
+                  >
+                </div>
+                <div *ngIf="!favoriteNapPlace?.favoritePlace">
+                  <fa-icon icon="window-minimize" class="text-muted"></fa-icon>
+                </div>
+              </a>
+            </div>
+            <div class="col-lg-10 col-sm-9 col-6 text-left">
+              <a [routerLink]="['/nap/new']" class="btn btn-primary m-0 text-white p-2 mt-1">
+                <fa-icon icon="plus"></fa-icon>
+                <span class="d-none d-sm-inline" jhiTranslate="gatewayApp.babyBabyProfile.addNap"> Nap </span>
+              </a>
+            </div>
+          </div>
+        </dd>
+        <dt class="align-self-center">
+          <span jhiTranslate="gatewayApp.babyBabyProfile.weight" class="align-self-center">Weight</span>
+        </dt>
+        <dd>
+          <div class="row align-items-center">
+            <div class="col-lg-2 col-sm-3 col-6 m-0 pr-0 text-center">
+              <a [routerLink]="['/weight']">
+                <div *ngIf="latestWeight">
+                  <span jhiTranslate="gatewayApp.babyBabyProfile.latestWeight" [translateValues]="{ weight: latestWeight?.value }"
+                    >{{ latestWeight?.value }} Kg</span
+                  >
+                </div>
+                <div *ngIf="!latestWeight">
+                  <fa-icon icon="window-minimize" class="text-muted"></fa-icon>
+                </div>
+              </a>
+            </div>
+            <div class="col-lg-10 col-sm-9 col-6 text-left">
+              <a [routerLink]="['/weight/new']" class="btn btn-primary m-0 text-white p-2 mt-1">
+                <fa-icon icon="plus"></fa-icon>
+                <span class="d-none d-sm-inline" jhiTranslate="gatewayApp.babyBabyProfile.addWight"> Weight </span>
+              </a>
+              <button
+                (click)="showHideLastWeightsDaysAgoGraphic()"
+                [hidden]="hideLastWeightsDaysAgoGraphicIcon"
+                [disabled]="graphicLoading"
+                class="btn btn-info btn-sm p-2 mt-1"
+              >
+                <fa-icon icon="chart-area" [ngClass]="graphicLoading ? 'fa-bounce' : ''"></fa-icon>
+              </button>
+            </div>
+          </div>
+        </dd>
+        <dt *ngIf="isShowLastWeightsDaysAgoGraphic(lastWeightsDaysAgo)"></dt>
+        <dd class="gird-col-span-2" *ngIf="isShowLastWeightsDaysAgoGraphic(lastWeightsDaysAgo)">
+          <div class="row mt-1">
+            <div class="col-md-12 col-xs-12">
+              <h4 class="nvd3-chart-title mobile">{{ d3ChartTranslate.last30Days }}</h4>
+              <nvd3 [options]="lastWeightsDaysAgoOptions" [data]="lastWeightsDaysAgoData"></nvd3>
+            </div>
+          </div>
+        </dd>
+        <dt class="align-self-center">
+          <span jhiTranslate="gatewayApp.babyBabyProfile.height" class="align-self-center">Height</span>
+        </dt>
+        <dd>
+          <div class="row align-items-center">
+            <div class="col-lg-2 col-sm-3 col-6 m-0 pr-0 text-center">
+              <a [routerLink]="['/height']">
+                <div *ngIf="latestHeight">
+                  <span jhiTranslate="gatewayApp.babyBabyProfile.latestHeight" [translateValues]="{ height: latestHeight?.value }"
+                    >{{ latestHeight?.value }} cm</span
+                  >
+                </div>
+                <div *ngIf="!latestHeight">
+                  <fa-icon icon="window-minimize" class="text-muted"></fa-icon>
+                </div>
+              </a>
+            </div>
+            <div class="col-lg-10 col-sm-9 col-6 text-left">
+              <a [routerLink]="['/height/new']" class="btn btn-primary m-0 text-white p-2 mt-1">
+                <fa-icon icon="plus"></fa-icon>
+                <span class="d-none d-sm-inline" jhiTranslate="gatewayApp.babyBabyProfile.addHight"> Height </span>
+              </a>
+              <button
+                (click)="showHideLastHeightsDaysAgoGraphic()"
+                [hidden]="hideLastHeightsDaysAgoGraphicIcon"
+                [disabled]="graphicLoading"
+                class="btn btn-info btn-sm p-2 mt-1"
+              >
+                <fa-icon icon="chart-area" [ngClass]="graphicLoading ? 'fa-bounce' : ''"></fa-icon>
+              </button>
+            </div>
+          </div>
+        </dd>
+        <dt *ngIf="isShowLastHeightsDaysAgoGraphic(lastHeightsDaysAgo)"></dt>
+        <dd class="gird-col-span-2" *ngIf="isShowLastHeightsDaysAgoGraphic(lastHeightsDaysAgo)">
+          <div class="row mt-1">
+            <div class="col-md-12 col-xs-12">
+              <h4 class="nvd3-chart-title mobile">{{ d3ChartTranslate.last30Days }}</h4>
+              <nvd3 [options]="lastHeightsDaysAgoOptions" [data]="lastHeightsDaysAgoData"></nvd3>
+            </div>
+          </div>
+        </dd>
+        <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="gatewayApp.babyBabyProfile.main">Main</span></dt>
+        <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <div class="row">
+            <div class="col-lg-2 col-sm-3 col-6 m-0 pr-0 text-center">
+              <fa-icon
+                [icon]="babyProfile.main ? 'check' : 'window-minimize'"
+                aria-hidden="true"
+                class="{{ babyProfile.main ? 'text-success' : 'text-muted' }}"
+              ></fa-icon>
+            </div>
+          </div>
+        </dd>
+        <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="gatewayApp.babyBabyProfile.userId">User Id</span></dt>
+        <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <span>{{ babyProfile.userId }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/baby-profile', babyProfile.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

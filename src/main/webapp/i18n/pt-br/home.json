@@ -1,0 +1,46 @@
+{
+  "home": {
+    "title": "Bem vindo!",
+    "titleWithName": "Bem vindo, {{username}}!",
+    "subtitle": "Mamazinha Baby Care lhe auxiliará no cuidado do seu bebê. 👶",
+    "logged": {
+      "message": "Você está logado como \"{{username}}\".",
+      "babyProfile": {
+        "nobabyProfile": "O primeiro passo é criar um perfil para seu bebê",
+        "addbabyProfile": "Perfil do Bebê",
+        "editbabyProfile": "{{name}}"
+      },
+      "nap": {
+        "incompleteNaps": {
+          "title": "{{name}} já acordou da soneca a seguir?",
+          "yes": "Adicionar horário que acordou",
+          "no": "Remover esta soneca"
+        },
+        "today": "Horas de sono, hoje - {{date}}",
+        "todayMobile": "Horas de sono - {{date}}",
+        "addnap": "Soneca",
+        "progressbarTitle": "{{sleepHours}} / Objetivo: {{goal}}",
+        "noprogress": "{{name}} ainda não dormiu hoje?"
+      },
+      "breastFeed": {
+        "incompletebreastFeeds": {
+          "title": "{{name}} terminou a seguinte mamada / alimentação com fórmula?",
+          "yes": "Adicionar horário de fim",
+          "no": "Remover esta amamentação/fórmula"
+        },
+        "addBreastFeed": "Amamentação/Fórmula",
+        "today": "{{name}} já mamou/tomou fórmula hoje?"
+      }
+    },
+    "question": "Em caso de dúvida sobre o JHipster:",
+    "link": {
+      "homepage": "Página principal JHipster",
+      "stackoverflow": "JHipster no Stack Overflow",
+      "bugtracker": "JHipster bug tracker",
+      "chat": "Sala de bate-papo pública JHipster",
+      "follow": "siga @jhipster no Twitter"
+    },
+    "like": "Se você gosta do JHipster, não se esqueça de avaliar no",
+    "github": "GitHub"
+  }
+}

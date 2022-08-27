@@ -1,0 +1,30 @@
+{
+  "gatewayApp": {
+    "babyWeight": {
+      "home": {
+        "title": "Weights",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Weight",
+        "createOrEditLabel": "Create or edit a Weight",
+        "notFound": "No Weights found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Weight {{ id }}?"
+      },
+      "detail": {
+        "title": "Weight"
+      },
+      "id": "ID",
+      "value": "Weight (kg)",
+      "date": "Date",
+      "babyProfile": "Baby Profile"
+    }
+  },
+  "babyApp": {
+    "babyWeight": {
+      "created": "A new Weight is created with identifier {{ param }}",
+      "updated": "A Weight is updated with identifier {{ param }}",
+      "deleted": "A Weight is deleted with identifier {{ param }}"
+    }
+  }
+}

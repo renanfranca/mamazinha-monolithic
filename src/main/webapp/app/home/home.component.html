@@ -1,0 +1,269 @@
+<div class="row">
+  <div class="col-md-3 d-none d-md-inline">
+    <span class="lollipop img-fluid rounded"></span>
+  </div>
+  <div class="col-md-8">
+    <div *ngIf="account === null">
+      <h1 class="display-5 d-none d-sm-block"><span jhiTranslate="home.title">Welcome, Java Hipster!</span></h1>
+      <p class="lead d-none d-sm-inline" jhiTranslate="home.subtitle">This is your homepage</p>
+      <h5 class="d-sm-none"><span jhiTranslate="home.title">Welcome, Java Hipster!</span></h5>
+      <p class="d-sm-none" jhiTranslate="home.subtitle">This is your homepage</p>
+    </div>
+    <div *ngIf="account !== null && !babyProfile.name">
+      <h1 class="display-5 d-none d-sm-block">
+        <span jhiTranslate="home.titleWithName" [translateValues]="{ username: account.firstName ?? account.login }"
+          >Welcome, Java Hipster!</span
+        >
+      </h1>
+      <h5 class="d-sm-none">
+        <span jhiTranslate="home.titleWithName" [translateValues]="{ username: account.firstName ?? account.login }"
+          >Welcome, Java Hipster!</span
+        >
+      </h5>
+    </div>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div [ngSwitch]="account !== null">
+      <div *ngSwitchCase="true">
+        <div [hidden]="babyProfile.name">
+          <div class="row">
+            <div class="col-12 text-center">
+              <div class="alert alert-info">
+                <span jhiTranslate="home.logged.babyProfile.nobabyProfile"> The first step is create an baby profile </span>
+              </div>
+            </div>
+            <div class="col-12 text-center">
+              <a [routerLink]="['/baby-profile/new']" class="btn btn-primary m-0 mb-1 text-white">
+                <fa-icon icon="plus"></fa-icon>
+                <span jhiTranslate="home.logged.babyProfile.addbabyProfile"> Baby Profile </span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div [hidden]="!babyProfile.name">
+          <div class="row">
+            <div class="col-12 text-left">
+              <a [routerLink]="['/baby-profile', babyProfile.id, 'view']" class="btn btn-info m-0 mb-1 text-white">
+                <fa-icon icon="eye"></fa-icon>
+                <span jhiTranslate="home.logged.babyProfile.editbabyProfile" [translateValues]="{ name: babyProfile.name }">
+                  Baby Name
+                </span>
+              </a>
+            </div>
+          </div>
+          <div class="row mt-4" [hidden]="napsIncompletes?.length === 0">
+            <div class="col-md-12 col-xs-12">
+              <h4 jhiTranslate="home.logged.nap.incompleteNaps.title" [translateValues]="{ name: babyProfile.name }"></h4>
+            </div>
+            <div class="col-md-12 col-xs-12">
+              <div class="table-responsive" id="entities" *ngIf="napsIncompletes && napsIncompletes.length > 0">
+                <table class="table table-striped" aria-describedby="page-heading">
+                  <thead>
+                    <tr>
+                      <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+                      <th scope="col"><span jhiTranslate="gatewayApp.babyNap.start">Start</span></th>
+                      <th scope="col" class="text-center"><span jhiTranslate="gatewayApp.babyNap.place">Place</span></th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let nap of napsIncompletes; trackBy: trackIncompleteNapsId" data-cy="entityTable">
+                      <td class="align-middle">
+                        <a [routerLink]="['/nap', nap.id, 'view']">{{ nap.id }}</a>
+                      </td>
+                      <td class="align-middle">{{ nap.start | formatMediumDatetime }}</td>
+                      <td class="align-middle">
+                        <span *ngIf="nap.place" jhiTranslate="{{ 'gatewayApp.Place.' + nap.place }}">
+                          {{ nap.place }}
+                        </span>
+                        <div *ngIf="!nap.place" class="text-center">
+                          <fa-icon icon="window-minimize" class="text-muted"></fa-icon>
+                        </div>
+                      </td>
+                      <td class="text-right align-middle">
+                        <div class="btn-group">
+                          <button
+                            type="submit"
+                            [routerLink]="['/nap', nap.id, 'edit']"
+                            class="btn btn-primary btn-sm"
+                            data-cy="entityEditButton"
+                          >
+                            <fa-icon icon="thumbs-up"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="home.logged.nap.incompleteNaps.yes">Add the awake time</span>
+                          </button>
+                          <button
+                            type="submit"
+                            (click)="deleteIncompleteNap(nap)"
+                            class="btn btn-danger btn-sm"
+                            data-cy="entityDeleteButton"
+                          >
+                            <fa-icon icon="times"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="home.logged.nap.incompleteNaps.no">Remove this nap</span>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4" [hidden]="breastFeedsIncompletes?.length === 0">
+            <div class="col-md-12 col-xs-12">
+              <h4 jhiTranslate="home.logged.breastFeed.incompletebreastFeeds.title" [translateValues]="{ name: babyProfile.name }"></h4>
+            </div>
+            <div class="col-md-12 col-xs-12">
+              <div class="table-responsive" id="entities" *ngIf="breastFeedsIncompletes && breastFeedsIncompletes.length > 0">
+                <table class="table table-striped" aria-describedby="page-heading">
+                  <thead>
+                    <tr>
+                      <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+                      <th scope="col">
+                        <span jhiTranslate="gatewayApp.babyBreastFeed.start">Start</span>
+                      </th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let breastFeed of breastFeedsIncompletes; trackBy: trackIncompleteBreastFeedsId" data-cy="entityTable">
+                      <td>
+                        <a [routerLink]="['/breast-feed', breastFeed.id, 'view']">{{ breastFeed.id }}</a>
+                      </td>
+                      <td>{{ breastFeed.start | formatMediumDatetime }}</td>
+                      <td class="text-right">
+                        <div class="btn-group">
+                          <button
+                            type="submit"
+                            [routerLink]="['/breast-feed', breastFeed.id, 'edit']"
+                            class="btn btn-primary btn-sm"
+                            data-cy="entityEditButton"
+                          >
+                            <fa-icon icon="thumbs-up"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="home.logged.breastFeed.incompletebreastFeeds.yes"
+                              >Add the end time</span
+                            >
+                          </button>
+
+                          <button
+                            type="submit"
+                            (click)="deleteIncompleteBreastFeed(breastFeed)"
+                            class="btn btn-danger btn-sm"
+                            data-cy="entityDeleteButton"
+                          >
+                            <fa-icon icon="times"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="home.logged.breastFeed.incompletebreastFeeds.no"
+                              >Remove this breast/formula feeding</span
+                            >
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4 align-items-center">
+            <div class="col-7">
+              <h4 jhiTranslate="home.logged.nap.today" class="mt-1 d-none d-sm-inline" [translateValues]="{ date: currentTodayDateFormat }">
+                Naps hours for today - 17/09/21:
+              </h4>
+              <h4
+                jhiTranslate="home.logged.nap.todayMobile"
+                class="mobile mt-1 d-sm-none"
+                [translateValues]="{ date: currentTodayDateShortFormat }"
+              >
+                Naps hours for 17/09/21:
+              </h4>
+            </div>
+            <div class="col-5 col-md-5 text-right">
+              <a [routerLink]="['/nap/new']" class="btn btn-primary m-0 mb-1 text-white">
+                <fa-icon icon="plus"></fa-icon>
+                <span jhiTranslate="home.logged.nap.addnap"> Nap </span>
+              </a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-xs-12">
+              <ngb-progressbar
+                [max]="24"
+                [value]="napToday.sleepHours"
+                [striped]="true"
+                [type]="napToday.progress"
+                [hidden]="!napToday.sleepHours"
+              >
+                <span
+                  *ngIf="napToday.sleepHours"
+                  jhiTranslate="home.logged.nap.progressbarTitle"
+                  [translateValues]="{ sleepHours: napToday.sleepHours, goal: napToday.sleepHoursGoal }"
+                >
+                  {{ napToday.sleepHours }} / Goal: {{ napToday.sleepHoursGoal }}
+                </span>
+              </ngb-progressbar>
+              <div class="alert alert-warning" [hidden]="napToday.sleepHours">
+                <span jhiTranslate="home.logged.nap.noprogress" [translateValues]="{ name: babyProfile.name }">
+                  Did {{ babyProfile.name }} sleep today?</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4" *ngIf="isShowWeekNapGraphic(napLastCurrentWeek)">
+            <div class="col-md-12 col-xs-12">
+              <nvd3 [options]="napOptions" [data]="napData"></nvd3>
+            </div>
+          </div>
+          <div class="row mt-5 align-items-center">
+            <div class="col-3"></div>
+            <div class="col-9 col-md-9 text-right">
+              <a [routerLink]="['/breast-feed/new']" class="btn btn-primary m-0 mb-1 text-white">
+                <fa-icon icon="plus"></fa-icon>
+                <span jhiTranslate="home.logged.breastFeed.addBreastFeed"> Breast/Formula Feeding </span>
+              </a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-xs-12">
+              <div class="alert alert-warning" [hidden]="breastFeedsToday && breastFeedsToday.length > 0">
+                <span jhiTranslate="home.logged.breastFeed.today" [translateValues]="{ name: babyProfile.name }">
+                  Did you already breastfeed/formula feed {{ babyProfile.name }}, today?</span
+                >
+              </div>
+              <div class="mt-3 nvd3-chart-title" [hidden]="breastFeedsToday.length === 0">
+                <h4 class="mobile">{{ d3ChartTranslate.breastFeedTodayChartTitle }}</h4>
+                <nvd3 [options]="breastFeedTodayOptions" [data]="breastFeedTodayData"></nvd3>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4" *ngIf="isShowWeekBreastFeedGraphic(breastFeedLastCurrentWeek)">
+            <div class="col-md-12 col-xs-12">
+              <nvd3 [options]="breastFeedOptions" [data]="breastFeedData"></nvd3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-warning mt-2" *ngSwitchCase="false">
+        <span jhiTranslate="global.messages.info.authenticated.prefix">If you want to </span>
+        <a class="alert-link" (click)="login()">
+          <fa-icon icon="sign-in-alt"></fa-icon>
+          <span jhiTranslate="global.messages.info.authenticated.link">sign in </span>
+        </a>
+        <span jhiTranslate="global.messages.info.authenticated.suffix"
+          >, you can try the default accounts:<br />- Administrator (login="admin" and password="admin") <br />- User (login="user" and
+          password="user").</span
+        >
+      </div>
+
+      <div class="alert alert-warning" *ngSwitchCase="false">
+        <span jhiTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>&nbsp;
+        <a class="alert-link" routerLink="account/register">
+          <fa-icon icon="user-plus"></fa-icon>
+          <span jhiTranslate="global.messages.info.register.link">Register a new account </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

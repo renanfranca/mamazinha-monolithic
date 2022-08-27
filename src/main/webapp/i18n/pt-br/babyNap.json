@@ -1,0 +1,35 @@
+{
+  "gatewayApp": {
+    "babyNap": {
+      "home": {
+        "title": "Sonecas",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar nova Soneca",
+        "createOrEditLabel": "Criar ou editar Soneca",
+        "notFound": "Nenhum Soneca encontrada"
+      },
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Soneca {{ id }}?"
+      },
+      "detail": {
+        "title": "Soneca"
+      },
+      "validate": {
+        "dateError": "A data de Início não pode ser maior que a de Fim!"
+      },
+      "id": "ID",
+      "start": "Início",
+      "end": "Fim",
+      "place": "Local",
+      "babyProfile": "Perfil do Bebê",
+      "humor": "Humor ao acordar"
+    }
+  },
+  "babyApp": {
+    "babyNap": {
+      "created": "Uma nova Soneca foi criada com o identificador {{ param }}",
+      "updated": "Uma Soneca foi atualizada com o identificador {{ param }}",
+      "deleted": "Uma Soneca foi excluída com o identificador {{ param }}"
+    }
+  }
+}

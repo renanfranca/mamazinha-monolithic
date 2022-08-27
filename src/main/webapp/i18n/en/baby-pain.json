@@ -1,0 +1,13 @@
+{
+  "gatewayApp": {
+    "Pain": {
+      "null": "",
+      "NO_PAIN": "NO_PAIN",
+      "DISCOMFORTING": "DISCOMFORTING",
+      "DISTRESSING": "DISTRESSING",
+      "INTENSE": "INTENSE",
+      "UTTERLY_HORRIBLE": "UTTERLY_HORRIBLE",
+      "UNIMAGINABLE": "UNIMAGINABLE"
+    }
+  }
+}

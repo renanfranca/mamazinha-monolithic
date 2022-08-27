@@ -1,0 +1,30 @@
+{
+  "gatewayApp": {
+    "babyHeight": {
+      "home": {
+        "title": "Alturas",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar nova Altura",
+        "createOrEditLabel": "Criar ou editar Altura",
+        "notFound": "Nenhuma Altura encontrada"
+      },
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Altura {{ id }}?"
+      },
+      "detail": {
+        "title": "Altura"
+      },
+      "id": "ID",
+      "value": "Altura (cm)",
+      "date": "Data",
+      "babyProfile": "Perfil do Bebê"
+    }
+  },
+  "babyApp": {
+    "babyHeight": {
+      "created": "Uma nova Altura foi criada com o identificador {{ param }}",
+      "updated": "Uma Altura foi atualizada com o identificador {{ param }}",
+      "deleted": "Uma Altura foi excluída com o identificador {{ param }}"
+    }
+  }
+}

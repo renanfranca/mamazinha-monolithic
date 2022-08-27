@@ -1,0 +1,12 @@
+{
+  "gatewayApp": {
+    "Place": {
+      "null": "",
+      "LAP": "Lap",
+      "BABY_CRIB": "Baby Crib",
+      "CART": "Cart",
+      "BABY_CONFORT": "Baby Confort",
+      "BED": "Bed"
+    }
+  }
+}

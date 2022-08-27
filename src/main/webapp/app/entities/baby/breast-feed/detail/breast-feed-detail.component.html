@@ -1,0 +1,46 @@
+<div class="row justify-content-center">
+  <div class="col-md-8 col-sm-12">
+    <div *ngIf="breastFeed">
+      <h2 data-cy="breastFeedDetailsHeading"><span jhiTranslate="gatewayApp.babyBreastFeed.detail.title">Breast Feed</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ breastFeed.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.babyBreastFeed.start">Start</span></dt>
+        <dd>
+          <span>{{ breastFeed.start | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.babyBreastFeed.end">End</span></dt>
+        <dd>
+          <span>{{ breastFeed.end | formatMediumDatetime }}</span>
+        </dd>
+        <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="gatewayApp.babyBreastFeed.pain">Pain</span></dt>
+        <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <span jhiTranslate="{{ 'gatewayApp.Pain.' + breastFeed.pain }}">{{ breastFeed.pain }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.babyBreastFeed.babyProfile">Baby Profile</span></dt>
+        <dd>
+          <div *ngIf="breastFeed.babyProfile">
+            <a [routerLink]="['/baby-profile', breastFeed.babyProfile?.id, 'view']">{{ breastFeed.babyProfile?.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/breast-feed', breastFeed.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>
