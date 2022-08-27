@@ -1,0 +1,30 @@
+{
+  "gatewayApp": {
+    "babyHumorHistory": {
+      "home": {
+        "title": "Histórico do Humor",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Humor",
+        "createOrEditLabel": "Criar ou editar Humor",
+        "notFound": "Nenhum Humor encontrado"
+      },
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Humor {{ id }}?"
+      },
+      "detail": {
+        "title": "Humor"
+      },
+      "id": "ID",
+      "date": "Data",
+      "babyProfile": "Profile do Bebê",
+      "humor": "Humor"
+    }
+  },
+  "babyApp": {
+    "babyHumorHistory": {
+      "created": "Um novo Humor foi criado com o identificador {{ param }}",
+      "updated": "Um Humor foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Humor foi excluído com o identificador {{ param }}"
+    }
+  }
+}

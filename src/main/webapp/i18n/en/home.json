@@ -1,0 +1,46 @@
+{
+  "home": {
+    "title": "Welcome!",
+    "titleWithName": "Welcome, {{username}}!",
+    "subtitle": "Mamazinha Baby Care will help you take care of your baby. 👶",
+    "logged": {
+      "message": "You are logged in as user \"{{username}}\".",
+      "babyProfile": {
+        "nobabyProfile": "The first step is create an baby profile",
+        "addbabyProfile": "Baby Profile",
+        "editbabyProfile": "{{name}}"
+      },
+      "nap": {
+        "incompleteNaps": {
+          "title": "Did {{name}} awake from the following nap?",
+          "yes": "Add the awake time",
+          "no": "Remove this nap"
+        },
+        "today": "Sleep hours, today - {{date}}",
+        "todayMobile": "Sleep hours - {{date}}",
+        "addnap": "Nap",
+        "progressbarTitle": "{{sleepHours}} / Goal: {{goal}}",
+        "noprogress": "Did {{name}} sleep today?"
+      },
+      "breastFeed": {
+        "incompletebreastFeeds": {
+          "title": "Did {{name}} finish the following breastfeeding/formula feeding?",
+          "yes": "Add the end time",
+          "no": "Remove this breast/formula feeding"
+        },
+        "addBreastFeed": "Breast/Formula Feeding",
+        "today": "Did you already breastfeed/formula feed {{name}}, today?"
+      }
+    },
+    "question": "If you have any question on JHipster:",
+    "link": {
+      "homepage": "JHipster homepage",
+      "stackoverflow": "JHipster on Stack Overflow",
+      "bugtracker": "JHipster bug tracker",
+      "chat": "JHipster public chat room",
+      "follow": "follow @jhipster on Twitter"
+    },
+    "like": "If you like JHipster, don't forget to give us a star on",
+    "github": "GitHub"
+  }
+}

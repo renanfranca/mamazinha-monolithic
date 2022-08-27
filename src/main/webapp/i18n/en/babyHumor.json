@@ -1,0 +1,33 @@
+{
+  "gatewayApp": {
+    "babyHumor": {
+      "home": {
+        "title": "Humors",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Humor",
+        "createOrEditLabel": "Create or edit a Humor",
+        "notFound": "No Humors found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Humor {{ id }}?"
+      },
+      "detail": {
+        "title": "Humor"
+      },
+      "id": "ID",
+      "value": "Value",
+      "description": "Description",
+      "emotico": "Emotico",
+      "help": {
+        "value": "1 to 5  ANGRY, SAD, CALM, HAPPY, EXCITED"
+      }
+    }
+  },
+  "babyApp": {
+    "babyHumor": {
+      "created": "A new Humor is created with identifier {{ param }}",
+      "updated": "A Humor is updated with identifier {{ param }}",
+      "deleted": "A Humor is deleted with identifier {{ param }}"
+    }
+  }
+}

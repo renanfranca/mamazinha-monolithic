@@ -1,0 +1,31 @@
+{
+  "gatewayApp": {
+    "babyBreastFeed": {
+      "home": {
+        "title": "Breast/Formula feeding",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Breast/Formula feeding",
+        "createOrEditLabel": "Create or edit a Breast/Formula feeding",
+        "notFound": "No Breast/Formula feeding found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Breast/Formula feeding {{ id }}?"
+      },
+      "detail": {
+        "title": "Breast/Formula feeding"
+      },
+      "id": "ID",
+      "start": "Start",
+      "end": "End",
+      "pain": "Pain",
+      "babyProfile": "Baby Profile"
+    }
+  },
+  "babyApp": {
+    "babyBreastFeed": {
+      "created": "A new Breast/Formula feeding is created with identifier {{ param }}",
+      "updated": "A Breast/Formula feeding is updated with identifier {{ param }}",
+      "deleted": "A Breast/Formula feeding is deleted with identifier {{ param }}"
+    }
+  }
+}
