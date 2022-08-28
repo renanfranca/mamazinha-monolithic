@@ -10,7 +10,7 @@ import { NapService } from 'app/entities/baby/nap/service/nap.service';
 import { WeightService } from 'app/entities/baby/weight/service/weight.service';
 import { IWeight } from 'app/entities/baby/weight/weight.model';
 import { D3ChartService } from 'app/shared/d3-chart.service';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { NvD3Component } from 'ng2-nvd3';
 import { IBabyProfile } from '../baby-profile.model';
 

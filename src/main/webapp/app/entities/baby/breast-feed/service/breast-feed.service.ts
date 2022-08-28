@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { isPresent } from 'app/core/util/operators';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { getBreastFeedIdentifier, IBreastFeed } from '../breast-feed.model';
@@ -13,7 +13,7 @@ export type EntityArrayResponseType = HttpResponse<IBreastFeed[]>;
 
 @Injectable({ providedIn: 'root' })
 export class BreastFeedService {
-  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/breast-feeds', 'baby');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/breast-feeds');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 

@@ -7,7 +7,7 @@ import { IBabyProfile } from 'app/entities/baby/baby-profile/baby-profile.model'
 import { BabyProfileService } from 'app/entities/baby/baby-profile/service/baby-profile.service';
 import { IHumor } from 'app/entities/baby/humor/humor.model';
 import { HumorService } from 'app/entities/baby/humor/service/humor.service';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 import { INap, Nap } from '../nap.model';

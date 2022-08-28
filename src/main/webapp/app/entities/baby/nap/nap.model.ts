@@ -1,7 +1,7 @@
 import { IBabyProfile } from 'app/entities/baby/baby-profile/baby-profile.model';
 import { IHumor } from 'app/entities/baby/humor/humor.model';
 import { Place } from 'app/entities/enumerations/place.model';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 export interface INap {
   id?: number;

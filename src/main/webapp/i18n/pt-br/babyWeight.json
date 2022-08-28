@@ -21,7 +21,7 @@
     }
   },
   "babyApp": {
-    "babyWeight": {
+    "weight": {
       "created": "Um novo Peso foi criado com o identificador {{ param }}",
       "updated": "Um Peso foi atualizado com o identificador {{ param }}",
       "deleted": "Um Peso foi excluído com o identificador {{ param }}"

@@ -22,7 +22,7 @@
     }
   },
   "babyApp": {
-    "babyBreastFeed": {
+    "breastFeed": {
       "created": "Uma nova Amamentação/Fórmula foi criada com o identificador {{ param }}",
       "updated": "Uma Amamentação/Fórmula foi atualizada com o identificador {{ param }}",
       "deleted": "Uma Amamentação/Fórmula foi excluída com o identificador {{ param }}"

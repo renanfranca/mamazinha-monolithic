@@ -22,7 +22,7 @@
     }
   },
   "babyApp": {
-    "babyBreastFeed": {
+    "breastFeed": {
       "created": "A new Breast/Formula feeding is created with identifier {{ param }}",
       "updated": "A Breast/Formula feeding is updated with identifier {{ param }}",
       "deleted": "A Breast/Formula feeding is deleted with identifier {{ param }}"

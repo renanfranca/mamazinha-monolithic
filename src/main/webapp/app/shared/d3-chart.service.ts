@@ -2,7 +2,7 @@
  * ChartService to define the chart config for D3
  */
 import { IBreastFeed } from 'app/entities/baby/breast-feed/breast-feed.model';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 export class D3ChartService {
   static getChartConfig(d3ChartTranslate: any): any {
     return {

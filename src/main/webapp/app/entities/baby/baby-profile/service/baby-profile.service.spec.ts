@@ -1,9 +1,9 @@
-import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import * as dayjs from 'dayjs';
+import { TestBed } from '@angular/core/testing';
+import dayjs from 'dayjs';
 
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { IBabyProfile, BabyProfile } from '../baby-profile.model';
+import { BabyProfile, IBabyProfile } from '../baby-profile.model';
 
 import { BabyProfileService } from './baby-profile.service';
 

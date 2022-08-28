@@ -10,7 +10,7 @@ import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateS
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { httpInterceptorProviders } from 'app/core/interceptor/index';
 import { SharedModule } from 'app/shared/shared.module';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { NgxWebstorageModule, SessionStorageService } from 'ngx-webstorage';
 import { AppRoutingModule } from './app-routing.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here

@@ -37,7 +37,7 @@
     }
   },
   "babyApp": {
-    "babyBabyProfile": {
+    "babyProfile": {
       "created": "Um novo Perfil de Bebê foi criado com o identificador {{ param }}",
       "updated": "Um Perfil de Bebê foi atualizado com o identificador {{ param }}",
       "deleted": "Um Perfil de Bebê foi excluído com o identificador {{ param }}"

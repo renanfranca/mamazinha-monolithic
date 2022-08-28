@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 import { FormatMediumDatetimePipe } from './format-medium-datetime.pipe';
 

@@ -21,7 +21,7 @@
     }
   },
   "babyApp": {
-    "babyHeight": {
+    "height": {
       "created": "Uma nova Altura foi criada com o identificador {{ param }}",
       "updated": "Uma Altura foi atualizada com o identificador {{ param }}",
       "deleted": "Uma Altura foi excluída com o identificador {{ param }}"

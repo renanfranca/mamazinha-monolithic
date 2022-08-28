@@ -11,6 +11,7 @@
 /node/
 node_tmp/
 node_modules/
+_node_modules/
 npm-debug.log.*
 /.awcache/*
 /.cache-loader/*

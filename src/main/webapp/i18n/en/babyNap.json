@@ -26,7 +26,7 @@
     }
   },
   "babyApp": {
-    "babyNap": {
+    "nap": {
       "created": "A new Nap is created with identifier {{ param }}",
       "updated": "A Nap is updated with identifier {{ param }}",
       "deleted": "A Nap is deleted with identifier {{ param }}"

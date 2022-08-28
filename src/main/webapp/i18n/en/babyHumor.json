@@ -24,7 +24,7 @@
     }
   },
   "babyApp": {
-    "babyHumor": {
+    "humor": {
       "created": "A new Humor is created with identifier {{ param }}",
       "updated": "A Humor is updated with identifier {{ param }}",
       "deleted": "A Humor is deleted with identifier {{ param }}"

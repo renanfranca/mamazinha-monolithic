@@ -1,9 +1,9 @@
-import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import * as dayjs from 'dayjs';
+import { TestBed } from '@angular/core/testing';
+import dayjs from 'dayjs';
 
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { IHeight, Height } from '../height.model';
+import { Height, IHeight } from '../height.model';
 
 import { HeightService } from './height.service';
 

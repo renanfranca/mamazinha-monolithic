@@ -6,7 +6,7 @@ import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { BabyProfile, IBabyProfile } from '../baby-profile.model';

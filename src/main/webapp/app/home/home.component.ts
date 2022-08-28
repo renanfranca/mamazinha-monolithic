@@ -13,7 +13,7 @@ import { BreastFeedService } from 'app/entities/baby/breast-feed/service/breast-
 import { NapDeleteDialogComponent } from 'app/entities/baby/nap/delete/nap-delete-dialog.component';
 import { INap } from 'app/entities/baby/nap/nap.model';
 import { NapService } from 'app/entities/baby/nap/service/nap.service';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { NvD3Component } from 'ng2-nvd3';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

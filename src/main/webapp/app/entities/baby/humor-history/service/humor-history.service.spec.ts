@@ -1,9 +1,9 @@
-import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import * as dayjs from 'dayjs';
+import { TestBed } from '@angular/core/testing';
+import dayjs from 'dayjs';
 
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { IHumorHistory, HumorHistory } from '../humor-history.model';
+import { HumorHistory, IHumorHistory } from '../humor-history.model';
 
 import { HumorHistoryService } from './humor-history.service';
 

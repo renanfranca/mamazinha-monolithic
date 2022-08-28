@@ -21,7 +21,7 @@
     }
   },
   "babyApp": {
-    "babyWeight": {
+    "weight": {
       "created": "A new Weight is created with identifier {{ param }}",
       "updated": "A Weight is updated with identifier {{ param }}",
       "deleted": "A Weight is deleted with identifier {{ param }}"

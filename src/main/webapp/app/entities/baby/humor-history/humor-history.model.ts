@@ -1,6 +1,6 @@
-import * as dayjs from 'dayjs';
 import { IBabyProfile } from 'app/entities/baby/baby-profile/baby-profile.model';
 import { IHumor } from 'app/entities/baby/humor/humor.model';
+import dayjs from 'dayjs';
 
 export interface IHumorHistory {
   id?: number;

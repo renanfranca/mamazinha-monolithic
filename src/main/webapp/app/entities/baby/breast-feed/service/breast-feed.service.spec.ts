@@ -1,10 +1,10 @@
-import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import * as dayjs from 'dayjs';
+import { TestBed } from '@angular/core/testing';
+import dayjs from 'dayjs';
 
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import { Pain } from 'app/entities/enumerations/pain.model';
-import { IBreastFeed, BreastFeed } from '../breast-feed.model';
+import { BreastFeed, IBreastFeed } from '../breast-feed.model';
 
 import { BreastFeedService } from './breast-feed.service';
 

@@ -21,7 +21,7 @@
     }
   },
   "babyApp": {
-    "babyHeight": {
+    "height": {
       "created": "A new Height is created with identifier {{ param }}",
       "updated": "A Height is updated with identifier {{ param }}",
       "deleted": "A Height is deleted with identifier {{ param }}"

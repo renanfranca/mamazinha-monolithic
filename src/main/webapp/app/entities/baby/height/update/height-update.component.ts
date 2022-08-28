@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import { IBabyProfile } from 'app/entities/baby/baby-profile/baby-profile.model';
 import { BabyProfileService } from 'app/entities/baby/baby-profile/service/baby-profile.service';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 import { Height, IHeight } from '../height.model';

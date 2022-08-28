@@ -24,7 +24,7 @@
     }
   },
   "babyApp": {
-    "babyHumor": {
+    "humor": {
       "created": "Um novo Humor foi criado com o identificador {{ param }}",
       "updated": "Um Humor foi atualizado com o identificador {{ param }}",
       "deleted": "Um Humor foi excluído com o identificador {{ param }}"

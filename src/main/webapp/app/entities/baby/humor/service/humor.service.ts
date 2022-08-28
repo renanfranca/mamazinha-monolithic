@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IHumor, getHumorIdentifier } from '../humor.model';
+import { isPresent } from 'app/core/util/operators';
+import { getHumorIdentifier, IHumor } from '../humor.model';
 
 export type EntityResponseType = HttpResponse<IHumor>;
 export type EntityArrayResponseType = HttpResponse<IHumor[]>;
 
 @Injectable({ providedIn: 'root' })
 export class HumorService {
-  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/humors', 'baby');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/humors');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 

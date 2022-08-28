@@ -1,5 +1,5 @@
-import * as dayjs from 'dayjs';
 import { IBabyProfile } from 'app/entities/baby/baby-profile/baby-profile.model';
+import dayjs from 'dayjs';
 
 export interface IWeight {
   id?: number;

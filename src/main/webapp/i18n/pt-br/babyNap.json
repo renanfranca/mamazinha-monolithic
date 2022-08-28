@@ -26,7 +26,7 @@
     }
   },
   "babyApp": {
-    "babyNap": {
+    "nap": {
       "created": "Uma nova Soneca foi criada com o identificador {{ param }}",
       "updated": "Uma Soneca foi atualizada com o identificador {{ param }}",
       "deleted": "Uma Soneca foi excluída com o identificador {{ param }}"

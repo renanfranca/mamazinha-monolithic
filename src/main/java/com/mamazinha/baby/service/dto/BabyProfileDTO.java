@@ -28,7 +28,6 @@ public class BabyProfileDTO implements Serializable {
 
     private Boolean main;
 
-    @NotNull
     private String userId;
 
     public Long getId() {

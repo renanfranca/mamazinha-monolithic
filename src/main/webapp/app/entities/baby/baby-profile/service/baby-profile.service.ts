@@ -1,20 +1,20 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import dayjs from 'dayjs';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as dayjs from 'dayjs';
 
-import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IBabyProfile, getBabyProfileIdentifier } from '../baby-profile.model';
+import { isPresent } from 'app/core/util/operators';
+import { getBabyProfileIdentifier, IBabyProfile } from '../baby-profile.model';
 
 export type EntityResponseType = HttpResponse<IBabyProfile>;
 export type EntityArrayResponseType = HttpResponse<IBabyProfile[]>;
 
 @Injectable({ providedIn: 'root' })
 export class BabyProfileService {
-  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/baby-profiles', 'baby');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/baby-profiles');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
