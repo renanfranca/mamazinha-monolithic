@@ -37,7 +37,7 @@
     }
   },
   "babyApp": {
-    "babyBabyProfile": {
+    "babyProfile": {
       "created": "A new Baby Profile is created with identifier {{ param }}",
       "updated": "A Baby Profile is updated with identifier {{ param }}",
       "deleted": "A Baby Profile is deleted with identifier {{ param }}"
