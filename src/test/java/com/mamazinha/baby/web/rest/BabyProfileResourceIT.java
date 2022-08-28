@@ -237,26 +237,6 @@ class BabyProfileResourceIT {
 
     @Test
     @Transactional
-    void checkUserIdIsRequired() throws Exception {
-        int databaseSizeBeforeTest = babyProfileRepository.findAll().size();
-        // set the field null
-        babyProfile.setUserId(null);
-
-        // Create the BabyProfile, which fails.
-        BabyProfileDTO babyProfileDTO = babyProfileMapper.toDto(babyProfile);
-
-        restBabyProfileMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(babyProfileDTO))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<BabyProfile> babyProfileList = babyProfileRepository.findAll();
-        assertThat(babyProfileList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllBabyProfiles() throws Exception {
         // Initialize the database
         babyProfileRepository.saveAndFlush(babyProfile);
