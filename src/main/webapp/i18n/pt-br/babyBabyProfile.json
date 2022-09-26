@@ -1,0 +1,46 @@
+{
+  "gatewayApp": {
+    "babyBabyProfile": {
+      "home": {
+        "title": "Perfis de BeBês",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Perfil de BeBê",
+        "createOrEditLabel": "Criar ou editar Perfil de BeBê",
+        "notFound": "Nenhum Perfil de BeBê encontrado"
+      },
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Profil de Bebê {{ id }}?"
+      },
+      "detail": {
+        "title": "Perfil (Hoje, {{date}})"
+      },
+      "id": "ID",
+      "name": "Nome",
+      "picture": "Foto",
+      "birthday": "Data de Nascimento",
+      "sign": "Signo",
+      "main": "Perfil Principal",
+      "humorAverageHumorHistory": "Humor <br/> (média de hoje)",
+      "addHumorHistory": "Humor",
+      "humorAverageNap": "Humor após Soneca <br/> (média de hoje)",
+      "addNap": "Soneca",
+      "favoriteNapPlace": "Local Favorito da Soneca",
+      "favoriteNapPlaceLastDays": "(dos últimos {{lastDays}} dias)",
+      "favoriteNapPlaceAmountOfTimes": " ({{amountOfTimes}} vezes)",
+      "weight": "Peso",
+      "latestWeight": "{{weight}} kg",
+      "addWight": "Peso",
+      "height": "Altura",
+      "latestHeight": "{{height}} cm",
+      "addHight": "Altura",
+      "userId": "User Id"
+    }
+  },
+  "babyApp": {
+    "babyProfile": {
+      "created": "Um novo Perfil de Bebê foi criado com o identificador {{ param }}",
+      "updated": "Um Perfil de Bebê foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Perfil de Bebê foi excluído com o identificador {{ param }}"
+    }
+  }
+}

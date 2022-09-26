@@ -1,9 +1,9 @@
-import { Component, ViewChild, OnInit, AfterViewInit, ElementRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { LoginService } from 'app/login/login.service';
 import { AccountService } from 'app/core/auth/account.service';
+import { LoginService } from 'app/login/login.service';
 
 @Component({
   selector: 'jhi-login',
@@ -48,15 +48,15 @@ export class LoginComponent implements OnInit, AfterViewInit {
         password: this.loginForm.get('password')!.value,
         rememberMe: this.loginForm.get('rememberMe')!.value,
       })
-      .subscribe({
-        next: () => {
+      .subscribe(
+        () => {
           this.authenticationError = false;
           if (!this.router.getCurrentNavigation()) {
             // There were no routing during login (eg from navigationToStoredUrl)
             this.router.navigate(['']);
           }
         },
-        error: () => (this.authenticationError = true),
-      });
+        () => (this.authenticationError = true)
+      );
   }
 }

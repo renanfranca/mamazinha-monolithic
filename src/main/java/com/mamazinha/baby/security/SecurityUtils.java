@@ -26,6 +26,21 @@ public final class SecurityUtils {
         return Optional.ofNullable(extractPrincipal(securityContext.getAuthentication()));
     }
 
+    public static Optional<String> getCurrentUserId() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        return Optional.ofNullable(extractUserId(securityContext.getAuthentication()));
+    }
+
+    private static String extractUserId(Authentication authentication) {
+        if (authentication == null) {
+            return null;
+        } else if (authentication.getPrincipal() instanceof CustomUser) {
+            CustomUser customUser = (CustomUser) authentication.getPrincipal();
+            return customUser.getUserId();
+        }
+        return null;
+    }
+
     private static String extractPrincipal(Authentication authentication) {
         if (authentication == null) {
             return null;
@@ -78,7 +93,8 @@ public final class SecurityUtils {
      * Checks if the current user has none of the authorities.
      *
      * @param authorities the authorities to check.
-     * @return true if the current user has none of the authorities, false otherwise.
+     * @return true if the current user has none of the authorities, false
+     *         otherwise.
      */
     public static boolean hasCurrentUserNoneOfAuthorities(String... authorities) {
         return !hasCurrentUserAnyOfAuthorities(authorities);

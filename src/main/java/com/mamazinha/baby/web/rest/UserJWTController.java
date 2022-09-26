@@ -1,9 +1,12 @@
 package com.mamazinha.baby.web.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mamazinha.baby.domain.User;
 import com.mamazinha.baby.security.jwt.JWTFilter;
 import com.mamazinha.baby.security.jwt.TokenProvider;
+import com.mamazinha.baby.service.UserService;
 import com.mamazinha.baby.web.rest.vm.LoginVM;
+import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,7 +15,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Controller to authenticate users.
@@ -25,21 +31,32 @@ public class UserJWTController {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
+    private final UserService userService;
+
+    public UserJWTController(
+        TokenProvider tokenProvider,
+        AuthenticationManagerBuilder authenticationManagerBuilder,
+        UserService userService
+    ) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
+        this.userService = userService;
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-            loginVM.getUsername(),
+            loginVM.getUsername().toLowerCase(),
             loginVM.getPassword()
         );
-
+        Optional<User> userOptional = userService.getUserWithAuthoritiesByLogin(loginVM.getUsername().toLowerCase());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.createToken(authentication, loginVM.isRememberMe());
+        String jwt = tokenProvider.createToken(
+            authentication,
+            loginVM.isRememberMe(),
+            (userOptional.isPresent() ? userOptional.get().getId() : null)
+        );
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
         return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);

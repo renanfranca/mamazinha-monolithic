@@ -1,12 +1,19 @@
 {
   "global": {
-    "title": "Baby",
+    "title": "Mamazinha Baby Care",
     "browsehappy": "Você está usando um navegador <strong>desatualizado</strong>. Favor <a href=\"http://browsehappy.com/?locale=pt_BR\">atualize o seu navegador</a> para ter uma experiência melhor.",
     "menu": {
       "home": "Início",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
-        "main": "Entidades",
+        "main": "Meu Bebê",
+        "babyHumor": "Humor",
+        "babyBabyProfile": "Perfil",
+        "babyBreastFeed": "Amamentação/Fórmula",
+        "babyHeight": "Altura",
+        "babyHumorHistory": "Histórico do Humor",
+        "babyNap": "Soneca",
+        "babyWeight": "Peso",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -20,6 +27,7 @@
       },
       "admin": {
         "main": "Administração",
+        "gateway": "Gateway",
         "userManagement": "Gerenciamento de usuário",
         "tracker": "Rastreamento de usuário",
         "metrics": "Métricas",
@@ -47,9 +55,9 @@
     "messages": {
       "info": {
         "authenticated": {
-          "prefix": "Se deseja ",
-          "link": "entrar",
-          "suffix": ", utilize as seguintes contas padrões:<br/>- Administrador (usuário=\"admin\" and senha=\"admin\") <br/>- Usuário (usuário=\"user\" e senha=\"user\")."
+          "prefix": "Faça o login, por favor, ",
+          "link": "Entrar",
+          "suffix": ""
         },
         "register": {
           "noaccount": "Não possui uma conta ainda?",
@@ -137,5 +145,5 @@
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
     }
   },
-  "footer": "Este é o rodapé da página"
+  "footer": "Desenvolvido por <a href='https://renanfranca.github.io/about.html' target='_blank'>Renan Franca</a> | <a href='https://renanfranca.github.io/redirect/mamazinha-baby-care-app.html' target='_blank'>Porque criei este aplicativo?</a>"
 }

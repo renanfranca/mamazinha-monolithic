@@ -1,0 +1,58 @@
+<div class="row justify-content-center">
+  <div class="col-md-8 col-sm-12">
+    <div *ngIf="nap">
+      <h2 data-cy="napDetailsHeading"><span jhiTranslate="gatewayApp.babyNap.detail.title">Nap</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ nap.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.babyNap.start">Start</span></dt>
+        <dd>
+          <span>{{ nap.start | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.babyNap.end">End</span></dt>
+        <dd>
+          <span>{{ nap.end | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.babyNap.place">Place</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'gatewayApp.Place.' + nap.place }}">{{ nap.place }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.babyNap.babyProfile">Baby Profile</span></dt>
+        <dd>
+          <div *ngIf="nap.babyProfile">
+            <a [routerLink]="['/baby-profile', nap.babyProfile?.id, 'view']">{{ nap.babyProfile?.name }}</a>
+          </div>
+        </dd>
+        <dt class="align-self-center"><span jhiTranslate="gatewayApp.babyNap.humor">Humor</span></dt>
+        <dd>
+          <div *ngIf="nap.humor">
+            <div [ngSwitch]="nap.humor?.value">
+              <fa-icon *ngSwitchCase="1" icon="angry" class="emoji angry select"></fa-icon>
+              <fa-icon *ngSwitchCase="2" icon="frown" class="emoji frown select"></fa-icon>
+              <fa-icon *ngSwitchCase="3" icon="meh" class="emoji meh select"></fa-icon>
+              <fa-icon *ngSwitchCase="4" icon="smile" class="emoji smile select"></fa-icon>
+              <fa-icon *ngSwitchCase="5" icon="laugh" class="emoji laugh select"></fa-icon>
+            </div>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/nap', nap.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

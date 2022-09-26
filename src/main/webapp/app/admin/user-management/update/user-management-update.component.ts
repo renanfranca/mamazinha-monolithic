@@ -3,8 +3,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { LANGUAGES } from 'app/config/language.constants';
-import { User } from '../user-management.model';
 import { UserManagementService } from '../service/user-management.service';
+import { User } from '../user-management.model';
 
 @Component({
   selector: 'jhi-user-mgmt-update',
@@ -58,15 +58,15 @@ export class UserManagementUpdateComponent implements OnInit {
     this.isSaving = true;
     this.updateUser(this.user);
     if (this.user.id !== undefined) {
-      this.userService.update(this.user).subscribe({
-        next: () => this.onSaveSuccess(),
-        error: () => this.onSaveError(),
-      });
+      this.userService.update(this.user).subscribe(
+        () => this.onSaveSuccess(),
+        () => this.onSaveError()
+      );
     } else {
-      this.userService.create(this.user).subscribe({
-        next: () => this.onSaveSuccess(),
-        error: () => this.onSaveError(),
-      });
+      this.userService.create(this.user).subscribe(
+        () => this.onSaveSuccess(),
+        () => this.onSaveError()
+      );
     }
   }
 

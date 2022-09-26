@@ -1,0 +1,46 @@
+{
+  "gatewayApp": {
+    "babyBabyProfile": {
+      "home": {
+        "title": "Baby Profiles",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Baby Profile",
+        "createOrEditLabel": "Create or edit a Baby Profile",
+        "notFound": "No Baby Profiles found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Baby Profile {{ id }}?"
+      },
+      "detail": {
+        "title": "Profile (Today, {{date}})"
+      },
+      "id": "ID",
+      "name": "Name",
+      "picture": "Picture",
+      "birthday": "Birthday",
+      "sign": "Sign",
+      "main": "Main",
+      "humorAverageHumorHistory": "Humor <br/> (today average)",
+      "addHumorHistory": "Humor",
+      "humorAverageNap": "Humor after Nap <br/> (today average)",
+      "addNap": "Nap",
+      "favoriteNapPlace": "Favorite Nap Place",
+      "favoriteNapPlaceLastDays": "(from the last {{lastDays}} days)",
+      "favoriteNapPlaceAmountOfTimes": " ({{amountOfTimes}} times)",
+      "weight": "Weight",
+      "latestWeight": "{{weight}} kg",
+      "addWight": "Weight",
+      "height": "Height",
+      "latestHeight": "{{height}} cm",
+      "addHight": "Height",
+      "userId": "User Id"
+    }
+  },
+  "babyApp": {
+    "babyProfile": {
+      "created": "A new Baby Profile is created with identifier {{ param }}",
+      "updated": "A Baby Profile is updated with identifier {{ param }}",
+      "deleted": "A Baby Profile is deleted with identifier {{ param }}"
+    }
+  }
+}

@@ -13,7 +13,7 @@
           "pattern": "Your username is invalid."
         }
       },
-      "success": "<strong>Cadastro realizado com sucesso!</strong> Favor verificar seu e-mail para confirmar a conta.",
+      "success": "<strong>Cadastro realizado com sucesso!</strong> Favor verificar seu e-mail (a caixa de spam também) para confirmar a conta.",
       "error": {
         "fail": "<strong>Erro ao realizar o cadastro!</strong> Favor tentar novamente mais tarde.",
         "userexists": "<strong>Usuário já registrado!</strong> Favor escolher outro.",

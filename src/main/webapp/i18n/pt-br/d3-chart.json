@@ -1,0 +1,48 @@
+{
+  "gatewayApp": {
+    "daysOfWeek": {
+      "long": {
+        "monday": "Segunda",
+        "tuesday": "Terça",
+        "wednesday": "Quarta",
+        "thusday": "Quinta",
+        "friday": "Sexta",
+        "saturday": "Sábado",
+        "sunday": "Domingo"
+      },
+      "short": {
+        "monday": "Seg",
+        "tuesday": "Ter",
+        "wednesday": "Qua",
+        "thusday": "Qui",
+        "friday": "Sex",
+        "saturday": "Sáb",
+        "sunday": "Dom"
+      }
+    },
+    "lastWeek": "Semana Anterior",
+    "currentWeek": "Semana Atual",
+    "goal": "Objetivo",
+    "dayOfWeek": "Dia da Semana",
+    "sleepHours": "Horas de Sono",
+    "averageFeedHours": "Tempo médio de Amamentação/Fórmula (Horas)",
+    "feedingDurationHours": "Duração da Amamentação/Fórmula (Horas)",
+    "amountOfTimes": "Quantidade de vezes",
+    "time": "vez",
+    "duration": "Duração",
+    "start": "Início",
+    "end": "Fim",
+    "breastFeedTodayChartTitle": "Amamentação/Fórmula, hoje",
+    "averageNapHumor": "Média do Humor ao Acordar",
+    "averageHumorHistory": "Média do Histórico de Humor",
+    "weight": "Peso (kg)",
+    "height": "Altura (cm)",
+    "dates": "Datas",
+    "last30Days": "Últimos 30 dias",
+    "angry": "raiva",
+    "sad": "triste",
+    "calm": "calmo",
+    "happy": "feliz",
+    "excited": "empolgado"
+  }
+}

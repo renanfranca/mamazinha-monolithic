@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { HealthService } from './health.service';
 import { Health, HealthDetails, HealthStatus } from './health.model';
+import { HealthService } from './health.service';
 import { HealthModalComponent } from './modal/health-modal.component';
 
 @Component({
@@ -21,20 +21,20 @@ export class HealthComponent implements OnInit {
 
   getBadgeClass(statusState: HealthStatus): string {
     if (statusState === 'UP') {
-      return 'bg-success';
+      return 'badge-success';
     }
-    return 'bg-danger';
+    return 'badge-danger';
   }
 
   refresh(): void {
-    this.healthService.checkHealth().subscribe({
-      next: health => (this.health = health),
-      error: (error: HttpErrorResponse) => {
+    this.healthService.checkHealth().subscribe(
+      health => (this.health = health),
+      (error: HttpErrorResponse) => {
         if (error.status === 503) {
           this.health = error.error;
         }
-      },
-    });
+      }
+    );
   }
 
   showHealth(health: { key: string; value: HealthDetails }): void {

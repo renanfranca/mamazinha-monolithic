@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
-import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
+import { AccountService } from 'app/core/auth/account.service';
 import { PasswordService } from './password.service';
 
 @Component({
@@ -36,10 +36,10 @@ export class PasswordComponent implements OnInit {
     if (newPassword !== this.passwordForm.get(['confirmPassword'])!.value) {
       this.doNotMatch = true;
     } else {
-      this.passwordService.save(newPassword, this.passwordForm.get(['currentPassword'])!.value).subscribe({
-        next: () => (this.success = true),
-        error: () => (this.error = true),
-      });
+      this.passwordService.save(newPassword, this.passwordForm.get(['currentPassword'])!.value).subscribe(
+        () => (this.success = true),
+        () => (this.error = true)
+      );
     }
   }
 }

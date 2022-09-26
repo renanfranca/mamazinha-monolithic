@@ -1,12 +1,19 @@
 {
   "global": {
-    "title": "Baby",
+    "title": "Mamazinha Baby Care",
     "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
     "menu": {
       "home": "Home",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
-        "main": "Entities",
+        "main": "My Baby",
+        "babyHumor": "Humor",
+        "babyBabyProfile": "Baby Profile",
+        "babyBreastFeed": "Breast/Formula feeding",
+        "babyHeight": "Height",
+        "babyHumorHistory": "Humor History",
+        "babyNap": "Nap",
+        "babyWeight": "Weight",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -20,6 +27,7 @@
       },
       "admin": {
         "main": "Administration",
+        "gateway": "Gateway",
         "userManagement": "User management",
         "tracker": "User tracker",
         "metrics": "Metrics",
@@ -47,9 +55,9 @@
     "messages": {
       "info": {
         "authenticated": {
-          "prefix": "If you want to ",
-          "link": "sign in",
-          "suffix": ", you can try the default accounts:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\")."
+          "prefix": "Please login, ",
+          "link": "Sign in",
+          "suffix": ""
         },
         "register": {
           "noaccount": "You don't have an account yet?",
@@ -137,5 +145,5 @@
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
     }
   },
-  "footer": "This is your footer"
+  "footer": "Developed by <a href='https://renanfranca.github.io/about.html' target='_blank'>Renan Franca</a> | <a href='https://renanfranca.github.io/redirect/mamazinha-baby-care-app.html' target='_blank'>Why did I build this app?</a>"
 }
