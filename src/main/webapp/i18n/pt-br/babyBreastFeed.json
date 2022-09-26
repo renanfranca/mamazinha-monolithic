@@ -1,0 +1,31 @@
+{
+  "gatewayApp": {
+    "babyBreastFeed": {
+      "home": {
+        "title": "Amamentação/Fórmula",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar nova Amamentação/Fórmula",
+        "createOrEditLabel": "Criar ou editar Amamentação/Fórmula",
+        "notFound": "Nenhuma Amamentação/Fórmula encontrada"
+      },
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Amamentação/Fórmula {{ id }}?"
+      },
+      "detail": {
+        "title": "Amamentação/Fórmula"
+      },
+      "id": "ID",
+      "start": "Início",
+      "end": "Fim",
+      "pain": "Dor",
+      "babyProfile": "Perfil do Bebê"
+    }
+  },
+  "babyApp": {
+    "breastFeed": {
+      "created": "Uma nova Amamentação/Fórmula foi criada com o identificador {{ param }}",
+      "updated": "Uma Amamentação/Fórmula foi atualizada com o identificador {{ param }}",
+      "deleted": "Uma Amamentação/Fórmula foi excluída com o identificador {{ param }}"
+    }
+  }
+}

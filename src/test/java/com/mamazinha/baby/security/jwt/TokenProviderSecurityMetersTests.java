@@ -110,7 +110,7 @@ class TokenProviderSecurityMetersTests {
     private String createValidToken() {
         Authentication authentication = createAuthentication();
 
-        return tokenProvider.createToken(authentication, false);
+        return tokenProvider.createToken(authentication, false, 0l);
     }
 
     private String createExpiredToken() {
@@ -118,7 +118,7 @@ class TokenProviderSecurityMetersTests {
 
         Authentication authentication = createAuthentication();
 
-        return tokenProvider.createToken(authentication, false);
+        return tokenProvider.createToken(authentication, false, 0l);
     }
 
     private Authentication createAuthentication() {

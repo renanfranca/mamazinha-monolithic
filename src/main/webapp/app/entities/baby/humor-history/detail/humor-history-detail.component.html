@@ -1,0 +1,50 @@
+<div class="row justify-content-center">
+  <div class="col-md-8 col-sm-12">
+    <div *ngIf="humorHistory">
+      <h2 data-cy="humorHistoryDetailsHeading"><span jhiTranslate="gatewayApp.babyHumorHistory.detail.title">Humor History</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ humorHistory.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.babyHumorHistory.date">Date</span></dt>
+        <dd>
+          <span>{{ humorHistory.date | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.babyHumorHistory.babyProfile">Baby Profile</span></dt>
+        <dd>
+          <div *ngIf="humorHistory.babyProfile">
+            <a [routerLink]="['/baby-profile', humorHistory.babyProfile?.id, 'view']">{{ humorHistory.babyProfile?.name }}</a>
+          </div>
+        </dd>
+        <dt class="align-self-center"><span jhiTranslate="gatewayApp.babyHumorHistory.humor">Humor</span></dt>
+        <dd>
+          <div *ngIf="humorHistory.humor">
+            <div [ngSwitch]="humorHistory.humor?.value">
+              <fa-icon *ngSwitchCase="1" icon="angry" class="emoji angry select"></fa-icon>
+              <fa-icon *ngSwitchCase="2" icon="frown" class="emoji frown select"></fa-icon>
+              <fa-icon *ngSwitchCase="3" icon="meh" class="emoji meh select"></fa-icon>
+              <fa-icon *ngSwitchCase="4" icon="smile" class="emoji smile select"></fa-icon>
+              <fa-icon *ngSwitchCase="5" icon="laugh" class="emoji laugh select"></fa-icon>
+            </div>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/humor-history', humorHistory.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

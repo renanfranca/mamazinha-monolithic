@@ -1,0 +1,48 @@
+{
+  "gatewayApp": {
+    "daysOfWeek": {
+      "long": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thusday": "Thusday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
+      },
+      "short": {
+        "monday": "Mon",
+        "tuesday": "Tue",
+        "wednesday": "Wed",
+        "thusday": "Thu",
+        "friday": "Fri",
+        "saturday": "Sat",
+        "sunday": "Sun"
+      }
+    },
+    "lastWeek": "Last Week",
+    "currentWeek": "Current Week",
+    "goal": "Goal",
+    "dayOfWeek": "Day of Week",
+    "sleepHours": "Sleep Hours",
+    "averageFeedHours": "Average Feeding Time (Hours)",
+    "feedingDurationHours": "Feeding amount of time (Hours)",
+    "amountOfTimes": "Amount of times",
+    "time": "time",
+    "duration": "Duration",
+    "start": "Start",
+    "end": "End",
+    "breastFeedTodayChartTitle": "Breast/Formula feeding, today",
+    "averageNapHumor": "Average humor after nap",
+    "averageHumorHistory": "Average humor history",
+    "weight": "Weight (kg)",
+    "height": "Height (cm)",
+    "dates": "Dates",
+    "last30Days": "Last 30 days",
+    "angry": "angry",
+    "sad": "sad",
+    "calm": "calm",
+    "happy": "happy",
+    "excited": "excited"
+  }
+}

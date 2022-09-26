@@ -5,8 +5,8 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 
-import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
+import { AccountService } from 'app/core/auth/account.service';
 
 import { HasAnyAuthorityDirective } from './has-any-authority.directive';
 
@@ -22,12 +22,14 @@ describe('HasAnyAuthorityDirective tests', () => {
   let mockAccountService: AccountService;
   const authenticationState = new Subject<Account | null>();
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [HasAnyAuthorityDirective, TestHasAnyAuthorityDirectiveComponent],
-      providers: [AccountService],
-    });
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [HasAnyAuthorityDirective, TestHasAnyAuthorityDirectiveComponent],
+        providers: [AccountService],
+      });
+    })
+  );
 
   beforeEach(() => {
     mockAccountService = TestBed.inject(AccountService);
@@ -79,7 +81,7 @@ describe('HasAnyAuthorityDirective tests', () => {
       mockAccountService.hasAnyAuthority = jest.fn(() => false);
 
       // WHEN
-      authenticationState.next(null);
+      authenticationState.next();
       fixture.detectChanges();
 
       // THEN
@@ -89,7 +91,7 @@ describe('HasAnyAuthorityDirective tests', () => {
       mockAccountService.hasAnyAuthority = jest.fn(() => true);
 
       // WHEN
-      authenticationState.next(null);
+      authenticationState.next();
       fixture.detectChanges();
 
       // THEN
@@ -113,7 +115,7 @@ describe('HasAnyAuthorityDirective tests', () => {
 
       // WHEN
       jest.clearAllMocks();
-      authenticationState.next(null);
+      authenticationState.next();
 
       // THEN
       expect(mockAccountService.hasAnyAuthority).toHaveBeenCalled();
@@ -121,7 +123,7 @@ describe('HasAnyAuthorityDirective tests', () => {
       // WHEN
       jest.clearAllMocks();
       hasAnyAuthorityDirective.ngOnDestroy();
-      authenticationState.next(null);
+      authenticationState.next();
 
       // THEN
       expect(mockAccountService.hasAnyAuthority).not.toHaveBeenCalled();

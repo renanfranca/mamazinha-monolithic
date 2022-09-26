@@ -1,0 +1,35 @@
+{
+  "applications": "*",
+  "changelogDate": "20220729222820",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "humor_history",
+  "fields": [
+    {
+      "fieldName": "date",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "HumorHistory",
+  "pagination": "infinite-scroll",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "babyProfile",
+      "otherEntityRelationshipName": "humorHistory",
+      "relationshipName": "babyProfile",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "description",
+      "otherEntityName": "humor",
+      "otherEntityRelationshipName": "humorHistory",
+      "relationshipName": "humor",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

@@ -1,0 +1,44 @@
+{
+  "applications": "*",
+  "changelogDate": "20220729222821",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "nap",
+  "fields": [
+    {
+      "fieldName": "start",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "end",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "place",
+      "fieldType": "Place",
+      "fieldValues": "LAP,BABY_CRIB,CART,BABY_CONFORT"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Nap",
+  "pagination": "infinite-scroll",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "babyProfile",
+      "otherEntityRelationshipName": "nap",
+      "relationshipName": "babyProfile",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "description",
+      "otherEntityName": "humor",
+      "otherEntityRelationshipName": "nap",
+      "relationshipName": "humor",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

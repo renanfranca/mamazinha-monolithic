@@ -1,0 +1,119 @@
+<div>
+  <h2 id="page-heading" data-cy="NapHeading">
+    <span jhiTranslate="gatewayApp.babyNap.home.title">Naps</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="gatewayApp.babyNap.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-nap"
+        [routerLink]="['/nap/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="gatewayApp.babyNap.home.createLabel"> Create a new Nap </span>
+      </button>
+    </div>
+
+    <div class="d-flex justify-content-end mb-2 mt-2">
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="naps?.length === 0">
+    <span jhiTranslate="gatewayApp.babyNap.home.notFound">No naps found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="naps && naps.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="reset()">
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="start"><span jhiTranslate="gatewayApp.babyNap.start">Start</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="end"><span jhiTranslate="gatewayApp.babyNap.end">End</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="place"><span jhiTranslate="gatewayApp.babyNap.place">Place</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="babyProfile.name">
+            <span jhiTranslate="gatewayApp.babyNap.babyProfile">Baby Profile</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="humor.description">
+            <span jhiTranslate="gatewayApp.babyNap.humor">Humor</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+        <tr *ngFor="let nap of naps; trackBy: trackId" data-cy="entityTable">
+          <td class="align-middle">
+            <a [routerLink]="['/nap', nap.id, 'view']">{{ nap.id }}</a>
+          </td>
+          <td class="align-middle">{{ nap.start | formatMediumDatetime }}</td>
+          <td class="align-middle">{{ nap.end | formatMediumDatetime }}</td>
+          <td class="align-middle" jhiTranslate="{{ 'gatewayApp.Place.' + nap.place }}">{{ nap.place }}</td>
+          <td class="align-middle">
+            <div *ngIf="nap.babyProfile">
+              <a [routerLink]="['/baby-profile', nap.babyProfile?.id, 'view']">
+                <span *jhiHasAnyAuthority="'ROLE_ADMIN'"
+                  >(<fa-icon
+                    [icon]="nap.babyProfile?.main ? 'check' : 'window-minimize'"
+                    aria-hidden="true"
+                    class="{{ nap.babyProfile?.main ? 'text-success' : 'text-muted' }}"
+                  ></fa-icon
+                  >)</span
+                >
+                {{ nap.babyProfile?.name }}
+              </a>
+            </div>
+          </td>
+          <td class="align-middle">
+            <div *ngIf="!nap.humor?.emotico">
+              <div [ngSwitch]="nap.humor?.value">
+                <fa-icon *ngSwitchCase="1" icon="angry" class="emoji angry select"></fa-icon>
+                <fa-icon *ngSwitchCase="2" icon="frown" class="emoji frown select"></fa-icon>
+                <fa-icon *ngSwitchCase="3" icon="meh" class="emoji meh select"></fa-icon>
+                <fa-icon *ngSwitchCase="4" icon="smile" class="emoji smile select"></fa-icon>
+                <fa-icon *ngSwitchCase="5" icon="laugh" class="emoji laugh select"></fa-icon>
+              </div>
+            </div>
+            <div *ngIf="nap.humor?.emotico">
+              <a [routerLink]="['/humor', nap.humor?.id, 'view']">
+                <img
+                  [src]="'data:' + nap.humor?.emoticoContentType + ';base64,' + nap.humor?.emotico"
+                  style="max-width: 50%"
+                  alt="humor image"
+                />
+              </a>
+            </div>
+          </td>
+          <td class="text-right align-middle">
+            <div class="btn-group">
+              <button type="submit" [routerLink]="['/nap', nap.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button type="submit" [routerLink]="['/nap', nap.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(nap)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

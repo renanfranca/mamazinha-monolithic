@@ -1,0 +1,30 @@
+{
+  "gatewayApp": {
+    "babyHeight": {
+      "home": {
+        "title": "Heights",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Height",
+        "createOrEditLabel": "Create or edit a Height",
+        "notFound": "No Heights found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Height {{ id }}?"
+      },
+      "detail": {
+        "title": "Height"
+      },
+      "id": "ID",
+      "value": "Height (cm)",
+      "date": "Date",
+      "babyProfile": "Baby Profile"
+    }
+  },
+  "babyApp": {
+    "height": {
+      "created": "A new Height is created with identifier {{ param }}",
+      "updated": "A Height is updated with identifier {{ param }}",
+      "deleted": "A Height is deleted with identifier {{ param }}"
+    }
+  }
+}

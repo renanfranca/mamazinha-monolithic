@@ -1,0 +1,30 @@
+{
+  "gatewayApp": {
+    "babyWeight": {
+      "home": {
+        "title": "Pesos",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Peso",
+        "createOrEditLabel": "Criar ou editar Peso",
+        "notFound": "Nenhum Peso encontrado"
+      },
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Peso {{ id }}?"
+      },
+      "detail": {
+        "title": "Peso"
+      },
+      "id": "ID",
+      "value": "Peso (kg)",
+      "date": "Data",
+      "babyProfile": "Perfil do Bebê"
+    }
+  },
+  "babyApp": {
+    "weight": {
+      "created": "Um novo Peso foi criado com o identificador {{ param }}",
+      "updated": "Um Peso foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Peso foi excluído com o identificador {{ param }}"
+    }
+  }
+}

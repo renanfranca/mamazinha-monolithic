@@ -2,18 +2,24 @@
 version: '3.8'
 services:
   baby-app:
-    image: baby
+    image: stting/mamazinhaflyio
     environment:
-      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - _JAVA_OPTIONS=-Xmx128m -Xms128m
       - SPRING_PROFILES_ACTIVE=prod,api-docs
-      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=false
       - SPRING_DATASOURCE_URL=jdbc:postgresql://baby-postgresql:5432/baby
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://baby-postgresql:5432/baby
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - SPRING_DATASOURCE_USERNAME=baby
+      - SPRING_DATASOURCE_PASSWORD=
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:
       - 127.0.0.1:8080:8080
+    deploy:
+      resources:
+        limits:
+          memory: 256M
   baby-postgresql:
     image: postgres:14.2
     # volumes:
@@ -25,4 +31,4 @@ services:
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:
-      - 127.0.0.1:5432:5432
+      - 5432:5432
