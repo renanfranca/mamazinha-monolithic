@@ -10,6 +10,22 @@
 			"request": "attach",
 			"hostName": "localhost",
 			"port": 5005
-		}
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Debug Jest Current File",
+			"program": "${workspaceFolder}/node_modules/@angular/cli/bin/ng",
+			"cwd": "${workspaceFolder}",
+			"args": [
+				"test",
+				"--testMatch=\"**/+(*.)+(spec|test).+(ts|js)?(x)\"",
+				"--testPathPattern=${fileBasenameNoExtension}",
+				"--runInBand"
+			],
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "neverOpen",
+			"disableOptimisticBPs": true
+		},
 	]
 }
