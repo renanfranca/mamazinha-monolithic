@@ -12,6 +12,7 @@ services:
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
       - SPRING_DATASOURCE_USERNAME=baby
       - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_MAIL_PASSWORD=
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:
