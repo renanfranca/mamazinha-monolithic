@@ -25,9 +25,9 @@
 For feedback, feel free to create an issue on this repository.
 
 # 🟢 Up and Running
-<h2>
-Try it out now: <a href="https://renanfranca.github.io/redirect/babycareapp.html">Mamazinha Baby Care App</a>
-</h2>
+
+> Try it out now: <a href="https://renanfranca.github.io/redirect/babycareapp.html">Mamazinha Baby Care App</a>
+
                           
 # 📖 About
 <p align="center">
