@@ -24,6 +24,11 @@
 
 For feedback, feel free to create an issue on this repository.
 
+# 🟢 Up and Running
+<h2>
+Try it out now: <a href="https://renanfranca.github.io/redirect/babycareapp.html">Mamazinha Baby Care App</a>
+</h2>
+                          
 # 📖 About
 <p align="center">
   <a href="https://renanfranca.github.io/deploy-jhipster-monolithic-angularjs-and-spring-boot-at-fly.io.html"><img src="https://renanfranca.github.io/img/deploy-jhipster-monolithic-flyio/github-blog-post-cover_rounded_corner_readme.png?v=1234"/></a>
