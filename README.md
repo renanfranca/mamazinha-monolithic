@@ -1,3 +1,24 @@
+<p align="center">
+  <img src="https://renanfranca.github.io/img/mamazinha-baby-care/github-mamazinha-baby-image_readme.png" />
+</p>
+<p align="center">
+<a href="https://github.com/renanfranca/mamazinha-monolithic/blob/main/LICENSE" target="blank">
+<img src="https://img.shields.io/github/license/renanfranca/mamazinha-monolithic?style=flat-square" alt="mamazinha-monolithic license" />
+</a>
+<a href="https://github.com/renanfranca/mamazinha-monolithic/fork" target="blank">
+<img src="https://img.shields.io/github/forks/renanfranca/mamazinha-monolithic?style=flat-square" alt="mamazinha-monolithic forks"" alt="github-profile-readme-generator forks"/>
+</a>
+<a href="https://github.com/renanfranca/mamazinha-monolithic/stargazers" target="blank">
+<img src="https://img.shields.io/github/stars/renanfranca/mamazinha-monolithic?style=flat-square" alt="mamazinha-monolithic stars"/>
+</a>
+<a href="https://github.com/renanfranca/mamazinha-monolithic/issues" target="blank">
+<img src="https://img.shields.io/github/issues/renanfranca/mamazinha-monolithic?style=flat-square" alt="mamazinha-monolithic issues"/>
+</a>
+<a href="https://github.com/renanfranca/mamazinha-monolithic/pulls" target="blank">
+<img src="https://img.shields.io/github/issues-pr/renanfranca/mamazinha-monolithic?style=flat-square" alt="mamazinha-monolithic pull-requests"/>
+</a>
+</p>
+
 # baby
 
 This application was generated using JHipster 7.8.1, you can find documentation and help at [https://www.jhipster.tech](https://www.jhipster.tech).
