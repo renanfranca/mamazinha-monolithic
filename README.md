@@ -18,6 +18,17 @@
 <img src="https://img.shields.io/github/issues-pr/renanfranca/mamazinha-monolithic?style=flat-square" alt="mamazinha-monolithic pull-requests"/>
 </a>
 </p>
+                                                                                                                                              
+# ⭐
+**If you like this project, please, considering give it a star 🌟 to support me and enhanced this repository's visibility 🤩!**
+
+For feedback, feel free to create an issue on this repository.
+
+# 📖 About
+<p align="center">
+  <a href="https://renanfranca.github.io/deploy-jhipster-monolithic-angularjs-and-spring-boot-at-fly.io.html"><img src="https://renanfranca.github.io/img/deploy-jhipster-monolithic-flyio/github-blog-post-cover_rounded_corner_readme.png?v=1234"/></a>
+</p>
+<h2 align="center"><strong><a href="https://renanfranca.github.io/deploy-jhipster-monolithic-angularjs-and-spring-boot-at-fly.io.html">Deploy jhipster monolithic (angularjs + spring boot) at fly.io for FREE</a></strong></h2>
 
 # baby
 
