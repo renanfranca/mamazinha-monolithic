@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://renanfranca.github.io/img/mamazinha-baby-care/github-mamazinha-baby-image_readme.png" />
+  <img src="https://renanfranca.github.io/img/mamazinha-baby-care/github-mamazinha-monolithic-image_readme.png" />
 </p>
 <p align="center">
 <a href="https://github.com/renanfranca/mamazinha-monolithic/blob/main/LICENSE" target="blank">
