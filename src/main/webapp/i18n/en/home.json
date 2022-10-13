@@ -23,6 +23,7 @@
         "noprogress": "Did {{name}} sleep today?"
       },
       "breastFeed": {
+        "quickBreastFeed": "Quick Feeding",
         "incompletebreastFeeds": {
           "title": "Did {{name}} finish the following breastfeeding/formula feeding?",
           "yes": "Add the end time",

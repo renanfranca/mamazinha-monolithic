@@ -7,7 +7,7 @@ import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { IBabyProfile } from 'app/entities/baby/baby-profile/baby-profile.model';
 import { BabyProfileService } from 'app/entities/baby/baby-profile/service/baby-profile.service';
-import { IBreastFeed } from 'app/entities/baby/breast-feed/breast-feed.model';
+import { BreastFeed, IBreastFeed } from 'app/entities/baby/breast-feed/breast-feed.model';
 import { BreastFeedDeleteDialogComponent } from 'app/entities/baby/breast-feed/delete/breast-feed-delete-dialog.component';
 import { BreastFeedService } from 'app/entities/baby/breast-feed/service/breast-feed.service';
 import { NapDeleteDialogComponent } from 'app/entities/baby/nap/delete/nap-delete-dialog.component';
@@ -42,6 +42,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   breastFeedData: any;
   babyProfile: IBabyProfile = {};
   d3ChartTranslate: any = {};
+  quickBreastFeed: IBreastFeed = {};
   @ViewChild(NvD3Component) nvD3Component: NvD3Component | undefined;
 
   private readonly destroy$ = new Subject<void>();
@@ -177,6 +178,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.translateService.get(translateParameter + '.sunday').subscribe((res: string) => {
       this.d3ChartTranslate.sunday = res;
     });
+  }
+
+  createQuickBreastFeed(): void {
+    this.quickBreastFeed = {
+      ...new BreastFeed(),
+      id: undefined,
+      start: dayjs(Date.now()).subtract(15, 'minute'),
+      end: dayjs(Date.now()),
+      pain: undefined,
+      babyProfile: this.babyProfile,
+    };
+    this.breastFeedService.create(this.quickBreastFeed).subscribe(() => this.getBreastFeedData(this.babyProfile.id!));
   }
 
   isShowWeekNapGraphic(napLastCurrentWeek: any): boolean {
