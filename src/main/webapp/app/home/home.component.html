@@ -53,6 +53,12 @@
                 </span>
               </a>
             </div>
+            <div class="col-12 text-left">
+              <a (click)="createQuickBreastFeed()" class="btn btn-primary m-0 mb-1 text-white">
+                <fa-icon icon="plus"></fa-icon>
+                <span jhiTranslate="home.logged.breastFeed.quickBreastFeed"> </span>
+              </a>
+            </div>
           </div>
           <div class="row mt-4" [hidden]="breastFeedsIncompletes?.length === 0">
             <div class="col-md-12 col-xs-12">

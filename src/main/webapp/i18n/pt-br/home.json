@@ -23,6 +23,7 @@
         "noprogress": "{{name}} ainda não dormiu hoje?"
       },
       "breastFeed": {
+        "quickBreastFeed": "Alimentação Rápida",
         "incompletebreastFeeds": {
           "title": "{{name}} terminou a seguinte mamada / alimentação com fórmula?",
           "yes": "Adicionar horário de fim",
