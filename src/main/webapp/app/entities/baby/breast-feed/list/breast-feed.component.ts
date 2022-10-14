@@ -31,6 +31,10 @@ export class BreastFeedComponent implements OnInit {
     this.ascending = false;
   }
 
+  previousState(): void {
+    window.history.back();
+  }
+
   loadAll(): void {
     this.isLoading = true;
 

@@ -177,7 +177,7 @@ export class D3ChartService {
               diffHours = (diffTotalMinutes / 60).toFixed(0);
               diffMinutes = diffTotalMinutes % 60;
             }
-            let diffMinutesFormat = `${diffMinutes}`;
+            let diffMinutesFormat = `${diffMinutes.toFixed(0)}`;
             if (diffMinutes.toString().length === 1) {
               diffMinutesFormat = `0${diffMinutes}`;
             }
