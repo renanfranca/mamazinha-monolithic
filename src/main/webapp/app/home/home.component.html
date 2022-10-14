@@ -54,10 +54,10 @@
               </a>
             </div>
             <div class="col-12 text-left">
-              <a (click)="createQuickBreastFeed()" class="btn btn-primary m-0 mb-1 text-white">
-                <fa-icon icon="plus"></fa-icon>
+              <button (click)="createQuickBreastFeed()" [disabled]="isQuickBreastFeedSaving" class="btn btn-primary m-0 mb-1 text-white">
+                <fa-icon icon="plus" [spin]="isQuickBreastFeedSaving"></fa-icon>
                 <span jhiTranslate="home.logged.breastFeed.quickBreastFeed"> </span>
-              </a>
+              </button>
             </div>
           </div>
           <div class="row mt-4" [hidden]="breastFeedsIncompletes?.length === 0">
@@ -175,6 +175,9 @@
           <div class="row mt-5 align-items-center">
             <div class="col-3"></div>
             <div class="col-9 col-md-9 text-right">
+              <a [routerLink]="['/breast-feed']" class="btn btn-info m-0 mb-1 text-white">
+                <fa-icon icon="eye"></fa-icon>
+              </a>
               <a [routerLink]="['/breast-feed/new']" class="btn btn-primary m-0 mb-1 text-white">
                 <fa-icon icon="plus"></fa-icon>
                 <span jhiTranslate="home.logged.breastFeed.addBreastFeed"> Breast/Formula Feeding </span>
@@ -213,6 +216,9 @@
               </h4>
             </div>
             <div class="col-5 col-md-5 text-right">
+              <a [routerLink]="['/nap']" class="btn btn-info m-0 mb-1 text-white">
+                <fa-icon icon="eye"></fa-icon>
+              </a>
               <a [routerLink]="['/nap/new']" class="btn btn-primary m-0 mb-1 text-white">
                 <fa-icon icon="plus"></fa-icon>
                 <span jhiTranslate="home.logged.nap.addnap"> Nap </span>

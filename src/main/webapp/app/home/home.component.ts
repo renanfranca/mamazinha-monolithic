@@ -42,8 +42,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   breastFeedData: any;
   babyProfile: IBabyProfile = {};
   d3ChartTranslate: any = {};
-  quickBreastFeed: IBreastFeed = {};
   @ViewChild(NvD3Component) nvD3Component: NvD3Component | undefined;
+  isQuickBreastFeedSaving = false;
 
   private readonly destroy$ = new Subject<void>();
 
@@ -181,7 +181,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   createQuickBreastFeed(): void {
-    this.quickBreastFeed = {
+    this.isQuickBreastFeedSaving = true;
+    const quickBreastFeed: IBreastFeed = {
       ...new BreastFeed(),
       id: undefined,
       start: dayjs(Date.now()).subtract(15, 'minute'),
@@ -189,7 +190,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       pain: undefined,
       babyProfile: this.babyProfile,
     };
-    this.breastFeedService.create(this.quickBreastFeed).subscribe(() => this.getBreastFeedData(this.babyProfile.id!));
+    this.breastFeedService.create(quickBreastFeed).subscribe(() => this.getBreastFeedData(this.babyProfile.id!));
   }
 
   isShowWeekNapGraphic(napLastCurrentWeek: any): boolean {
@@ -344,9 +345,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private getBreastFeedData(id: number): void {
-    this.breastFeedService.incompleteBreastFeedsByBabyProfile(id).subscribe((res: HttpResponse<any>) => {
-      this.breastFeedsIncompletes = res.body ?? [];
-    });
+    this.breastFeedService.incompleteBreastFeedsByBabyProfile(id).subscribe(
+      (res: HttpResponse<any>) => {
+        this.breastFeedsIncompletes = res.body ?? [];
+        this.isQuickBreastFeedSaving = false;
+      },
+      () => (this.isQuickBreastFeedSaving = false)
+    );
 
     this.breastFeedService.todayBreastFeedsByBabyProfile(id).subscribe((res: HttpResponse<any>) => {
       this.breastFeedsToday = res.body ?? [];
