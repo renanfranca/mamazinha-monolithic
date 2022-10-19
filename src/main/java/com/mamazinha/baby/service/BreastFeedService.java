@@ -161,7 +161,7 @@ public class BreastFeedService {
         }
 
         return breastFeedRepository
-            .findAllByBabyProfileIdAndStartBetweenAndEndIsNotNull(id, todayMidnight, tomorrowMidnight)
+            .findAllByBabyProfileIdAndStartBetweenAndEndIsNotNullOrderByStart(id, todayMidnight, tomorrowMidnight)
             .stream()
             .map(breastFeedMapper::toDto)
             .collect(Collectors.toList());

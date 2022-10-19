@@ -237,11 +237,20 @@ export class BabyProfileDetailComponent implements OnInit, AfterViewInit {
       this.createLastWeightsDaysAgo();
     } else {
       this.graphicLoading = true;
-      this.weightService.lastWeightsByDaysByBabyProfile(this.babyProfile!.id!, 30).subscribe((res: HttpResponse<any>) => {
-        this.lastWeightsDaysAgo = res.body;
-        this.createLastWeightsDaysAgo();
-        this.graphicLoading = false;
-      });
+      this.weightService
+        .query({
+          sort: ['date,asc'],
+        })
+        .subscribe(
+          (res: HttpResponse<any>) => {
+            this.lastWeightsDaysAgo = res.body;
+            this.graphicLoading = false;
+            this.createLastWeightsDaysAgo();
+          },
+          () => {
+            this.graphicLoading = false;
+          }
+        );
     }
   }
 
@@ -255,11 +264,20 @@ export class BabyProfileDetailComponent implements OnInit, AfterViewInit {
       this.createLastHeightsDaysAgo();
     } else {
       this.graphicLoading = true;
-      this.heightService.lastHeightsByDaysByBabyProfile(this.babyProfile!.id!, 30).subscribe((res: HttpResponse<any>) => {
-        this.lastHeightsDaysAgo = res.body;
-        this.createLastHeightsDaysAgo();
-        this.graphicLoading = false;
-      });
+      this.heightService
+        .query({
+          sort: ['date,asc'],
+        })
+        .subscribe(
+          (res: HttpResponse<any>) => {
+            this.lastHeightsDaysAgo = res.body;
+            this.createLastHeightsDaysAgo();
+            this.graphicLoading = false;
+          },
+          () => {
+            this.graphicLoading = false;
+          }
+        );
     }
   }
 
@@ -289,20 +307,28 @@ export class BabyProfileDetailComponent implements OnInit, AfterViewInit {
     this.weightService.latestWeightByBabyProfile(id).subscribe((res: HttpResponse<any>) => {
       this.latestWeight = res.body;
     });
-    this.weightService.lastWeightsByDaysByBabyProfile(id, 30).subscribe((res: HttpResponse<any>) => {
-      const weights = res.body;
-      this.hideLastWeightsDaysAgoGraphicIcon = weights.length <= 1;
-    });
+    this.weightService
+      .query({
+        sort: ['date,asc'],
+      })
+      .subscribe((res: HttpResponse<any>) => {
+        const weights = res.body;
+        this.hideLastWeightsDaysAgoGraphicIcon = weights.length <= 1;
+      });
   }
 
   getHeightData(id: number): void {
     this.heightService.latestHeightByBabyProfile(id).subscribe((res: HttpResponse<any>) => {
       this.latestHeight = res.body;
     });
-    this.heightService.lastHeightsByDaysByBabyProfile(id, 30).subscribe((res: HttpResponse<any>) => {
-      const heights = res.body;
-      this.hideLastHeightsDaysAgoGraphicIcon = heights.length <= 1;
-    });
+    this.heightService
+      .query({
+        sort: ['date,asc'],
+      })
+      .subscribe((res: HttpResponse<any>) => {
+        const heights = res.body;
+        this.hideLastHeightsDaysAgoGraphicIcon = heights.length <= 1;
+      });
   }
 
   byteSize(base64String: string): string {

@@ -44,7 +44,7 @@ public interface BreastFeedRepository extends JpaRepository<BreastFeed, Long> {
 
     List<BreastFeed> findAllByBabyProfileIdAndEndIsNullOrderByStartDesc(Long id);
 
-    List<BreastFeed> findAllByBabyProfileIdAndStartBetweenAndEndIsNotNull(
+    List<BreastFeed> findAllByBabyProfileIdAndStartBetweenAndEndIsNotNullOrderByStart(
         Long babyProfileId,
         ZonedDateTime todayMidnight,
         ZonedDateTime tomorrowMidnight
